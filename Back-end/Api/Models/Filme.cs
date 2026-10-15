@@ -23,5 +23,5 @@ public class Filme
     [MaxLength(1000)]
     public string PosterCatalogo { get; set; } = "";
     public bool Ativo { get; set; } = true;
-    public List<Sessao> Sessoes { get; set; } = [];
+    public List<Sessao> Sessoes { get; set; } = new List<Sessao>();
 }

@@ -2,7 +2,6 @@
 
 Uma API C# para as partes do grupo. Os arquivos da Giovana devem entrar nas
 mesmas pastas Controllers, Models e Data, usando o namespace CineJoy.Api.
-Confira arquivos com o mesmo nome antes de copiar, principalmente Program.cs.
 
 - Api/Controllers: rotas HTTP.
 - Api/Models: classes dos dados.

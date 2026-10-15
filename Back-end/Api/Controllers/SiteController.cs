@@ -16,7 +16,8 @@ public class SiteController : ControllerBase
     [HttpGet("home")]
     public async Task<IActionResult> Home()
     {
-        return Ok(new {
+        return Ok(new
+        {
             filmes = await Catalogo.Carregar(banco),
             produtos = await banco.Produtos.AsNoTracking().Where(x => x.Ativo).ToListAsync(),
             unidades = await banco.Unidades.AsNoTracking().Where(x => x.Ativo).ToListAsync()

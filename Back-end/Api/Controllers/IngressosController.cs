@@ -18,8 +18,8 @@ public class IngressosController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Listar()
     {
-        var usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var funcionario = User.IsInRole("Funcionario");
+        int usuarioId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        bool funcionario = User.IsInRole("Funcionario");
         var lista = await (
             from ingresso in banco.Ingressos.AsNoTracking()
             join pedido in banco.Pedidos on ingresso.PedidoId equals pedido.Id
@@ -30,9 +30,15 @@ public class IngressosController : ControllerBase
             join unidade in banco.Unidades on sala.UnidadeId equals unidade.Id
             where funcionario || pedido.UsuarioId == usuarioId
             orderby ingresso.Id descending
-            select new {
-                ingresso.Id, ingresso.PedidoId, usuario = usuario.Nome, filme = filme.Titulo,
-                ingresso.Assento, ingresso.Preco, pedido.Status,
+            select new
+            {
+                ingresso.Id,
+                ingresso.PedidoId,
+                usuario = usuario.Nome,
+                filme = filme.Titulo,
+                ingresso.Assento,
+                ingresso.Preco,
+                pedido.Status,
                 unidade = unidade.Nome + " - Sala " + sala.Numero + " - Sessao " + sessao.Id,
                 comida = string.Join(", ", banco.ItensPedido.Where(i => i.PedidoId == pedido.Id)
                     .Join(banco.Produtos, i => i.ProdutoId, p => p.Id, (i, p) => p.Nome))

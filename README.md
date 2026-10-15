@@ -5,9 +5,14 @@ Projeto web do CineJoy em React e Next.js.
 ## Organizacao
 
 - `frontend`: telas do site.
-- `Back-end/Api`: API C# compartilhada por Samuel e Henry.
+- `Back-end/Api`: API C#.
 - `Back-end/database`: scripts SQL Server.
-- `docs`: documentos de organizacao do projeto.
+
+No frontend, `ui` tem as telas e estilos, `data` tem os dados e chamadas HTTP,
+e `viewmodel` liga as acoes das telas aos dados. `src/app` e a entrada do Next.js.
+
+Na API, `Models` tem as classes, `Controllers` tem as rotas e operacoes,
+e `Data` guarda o acesso ao banco. A API retorna JSON para as telas React.
 
 ## Como rodar
 
@@ -27,8 +32,9 @@ http://localhost:3000
 
 ## Observacao
 
-As telas ainda usam dados locais. A API C# tambem usa dados em memoria,
-mas ja reune filmes, sessoes, ingressos, unidades, salas e funcionarios.
+Esta copia ainda depende dos arquivos restantes das entregas de Henry e Giovana.
+Ha chamadas para modulos que ainda nao foram adicionados, tanto no frontend
+quanto na API. Os comandos abaixo precisam dessas partes para funcionar.
 
 ## Como rodar a API
 

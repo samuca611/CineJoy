@@ -21,5 +21,5 @@ public class Sessao
     [NotMapped]
     public int UnidadeId { get; set; }
     [NotMapped]
-    public List<string> AssentosOcupados { get; set; } = [];
+    public List<string> AssentosOcupados { get; set; } = new List<string>();
 }
