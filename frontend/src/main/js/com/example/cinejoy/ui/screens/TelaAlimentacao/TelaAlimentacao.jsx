@@ -3,6 +3,7 @@ import { useState } from "react";
 import BotaoUsuario from "../../components/BotaoUsuario/BotaoUsuario.jsx";
 import Cabecalho from "../../components/Cabecalho/Cabecalho.jsx";
 import Rodape from "../../components/Rodape/Rodape.jsx";
+import TelaPagamento from "../TelaPagamento/TelaPagamento.jsx";
 
 // componente principal da tela de alimentação
 export default function TelaAlimentacao({
@@ -13,6 +14,7 @@ export default function TelaAlimentacao({
   abrirProgramacao,
   buscarFilme,
   produtos,
+  registrarIngresso,
   trocarUnidade,
   unidadeEscolhidaId,
   unidades,
@@ -21,6 +23,7 @@ export default function TelaAlimentacao({
 }) {
   //armazena os produtos adicionados no carrinho
   const [carrinho, setCarrinho] = useState([]);
+  const [pagamentoAberto, setPagamentoAberto] = useState(false);
 
   // converte o preco do produto para formato numérico
   function precoProduto(produto) {
@@ -73,6 +76,18 @@ export default function TelaAlimentacao({
 
   // cálculo do valor total dos itens no carrinho
   const total = carrinho.reduce((soma, item) => soma + precoProduto(item) * item.quantidade, 0);
+
+  if (pagamentoAberto) return <TelaPagamento
+    abrirAlimentacao={abrirAlimentacao} abrirIngresso={abrirIngresso}
+    abrirInicio={abrirInicio} abrirLogin={abrirLogin}
+    abrirProgramacao={abrirProgramacao} buscarFilme={buscarFilme}
+    alimentos={carrinho} assentos={[]} precoIngresso={0}
+    registrarIngresso={registrarIngresso}
+    trocarUnidade={trocarUnidade} unidade={unidades.find((u) => String(u.id) === String(unidadeEscolhidaId))}
+    unidadeEscolhidaId={unidadeEscolhidaId} unidades={unidades}
+    usuarioLogado={usuarioLogado} voltar={() => setPagamentoAberto(false)}
+    voltarInicio={voltarInicio}
+  />;
 
   return (
     <>
@@ -159,7 +174,7 @@ export default function TelaAlimentacao({
               <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
             </div>
 
-            <button className="finish-order" type="button">
+            <button className="finish-order" type="button" disabled={!carrinho.length} onClick={() => setPagamentoAberto(true)}>
               Finalizar pedido
             </button>
           </aside>

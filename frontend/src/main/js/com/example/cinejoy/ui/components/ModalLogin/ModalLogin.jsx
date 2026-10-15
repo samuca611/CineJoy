@@ -5,7 +5,7 @@ export default function ModalLogin({ abrirCadastro, fecharLogin, entrar }) {
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
-  function enviarLogin(evento) {
+  async function enviarLogin(evento) {
     evento.preventDefault();
 
     if (email === "" || senha === "") {
@@ -13,8 +13,12 @@ export default function ModalLogin({ abrirCadastro, fecharLogin, entrar }) {
       return;
     }
 
-    entrar(email, senha);
-    fecharLogin();
+    try {
+      await entrar(email, senha);
+      fecharLogin();
+    } catch (erro) {
+      setErro(erro.message);
+    }
   }
 
   function irParaCadastro(evento) {

@@ -27,6 +27,10 @@ export default function TelaPagamento({
 }) {
   const [formaPagamento, setFormaPagamento] = useState("Pix");
   const [compraFinalizada, setCompraFinalizada] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
+  const [pedido, setPedido] = useState(null);
+  const [chave] = useState(() => crypto.randomUUID());
   const totalIngressos = assentos.length * precoIngresso;
   const totalAlimentos = alimentos.reduce((soma, item) => soma + precoProduto(item) * item.quantidade, 0);
   const total = totalIngressos + totalAlimentos;
@@ -36,16 +40,24 @@ export default function TelaPagamento({
   }
 
   async function confirmarPagamento() {
-    await registrarIngresso({
-      idFilme: filme.id,
+    if (enviando || compraFinalizada) return;
+    setEnviando(true);
+    setErro("");
+    try {
+    const resposta = await registrarIngresso({
+      chave,
       idSessao: sessao?.id || 0,
-      usuario: usuarioLogado || "12345678901",
       assentos,
-      produtos: alimentos.map((item) => item.id),
-      precoIngresso
+      produtos: alimentos.map((item) => ({ id: item.id, quantidade: item.quantidade })),
+      formaPagamento
     });
-
+    setPedido(resposta);
     setCompraFinalizada(true);
+    } catch (falha) {
+      setErro(falha.message);
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -106,33 +118,31 @@ export default function TelaPagamento({
             </button>
 
             {formaPagamento === "Cartao" && (
-              <form className="card-form">
-                <label>Numero do cartao<input placeholder="0000 0000 0000 0000" /></label>
-                <label>Nome no cartao<input placeholder="Nome completo" /></label>
-                <label>Validade<input placeholder="MM/AA" /></label>
-                <label>CVV<input placeholder="123" /></label>
-              </form>
+              <div className="pix-box">
+                <CreditCard size={84} />
+                <p>Simulacao com cartao. Nenhum valor sera cobrado.</p>
+              </div>
             )}
 
             {formaPagamento === "Pix" && (
               <div className="pix-box">
                 <QrCode size={94} />
-                <p>Codigo Pix pronto para pagamento.</p>
+                <p>Simulacao Pix. Nenhum codigo de cobranca sera gerado.</p>
               </div>
             )}
 
             {formaPagamento === "Boleto" && (
               <div className="pix-box">
                 <Banknote size={84} />
-                <p>Boleto pronto para pagamento ate hoje.</p>
+                <p>Simulacao de boleto. Nenhum boleto sera emitido.</p>
               </div>
             )}
           </div>
 
           <aside className="payment-summary">
-            <img src={filme.imagem} alt={filme.titulo} />
+            {filme && <img src={filme.imagem} alt={filme.titulo} />}
             <h2>Resumo da compra</h2>
-            <p><strong>Filme:</strong> {filme.titulo}</p>
+            {filme && <p><strong>Filme:</strong> {filme.titulo}</p>}
             <p><strong>Unidade:</strong> {unidade ? unidade.nome : "Nao informada"}</p>
             <p><strong>Sessao:</strong> {sessao?.data} - {sessao?.horario}</p>
             <p><strong>Assentos:</strong> {assentos.join(", ")}</p>
@@ -151,20 +161,21 @@ export default function TelaPagamento({
 
             <div className="payment-total">
               <span>Total</span>
-              <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
+              <strong>R$ {Number(pedido?.total ?? total).toFixed(2).replace(".", ",")}</strong>
             </div>
 
             {compraFinalizada ? (
               <div className="payment-success">
                 <CheckCircle2 size={28} />
-                Compra confirmada!
+                Pedido #{pedido?.id} salvo. Pagamento simulado.
               </div>
             ) : (
-              <button className="finish-order" type="button" onClick={confirmarPagamento}>
-                Confirmar pagamento
+              <button className="finish-order" type="button" disabled={enviando} onClick={confirmarPagamento}>
+                {enviando ? "Salvando..." : "Confirmar simulacao"}
               </button>
             )}
 
+            {erro && <p role="alert">{erro}</p>}
             <button className="secondary-action" type="button" onClick={voltarInicio}>
               Voltar para inicio
             </button>

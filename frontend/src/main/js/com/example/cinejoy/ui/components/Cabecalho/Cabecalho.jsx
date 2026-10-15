@@ -16,9 +16,7 @@ export default function Cabecalho({
   const [textoBusca, setTextoBusca] = useState("");
 
   function clicarConta() {
-    if (!usuarioLogado) {
-      abrirLogin();
-    }
+    abrirLogin();
   }
 
   function enviarBusca(evento) {
