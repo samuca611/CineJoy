@@ -6,8 +6,15 @@ using System.Security.Claims;
 namespace CineJoy.Api.Controllers;
 
 [ApiController, Route("api/ingressos"), Authorize]
-public class IngressosController(Banco banco) : ControllerBase
+public class IngressosController : ControllerBase
 {
+    private readonly Banco banco;
+
+    public IngressosController(Banco banco)
+    {
+        this.banco = banco;
+    }
+
     [HttpGet]
     public async Task<IActionResult> Listar()
     {

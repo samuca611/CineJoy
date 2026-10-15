@@ -6,10 +6,20 @@ using Microsoft.EntityFrameworkCore;
 namespace CineJoy.Api.Controllers;
 
 [ApiController, Route("api/filmes")]
-public class FilmesController(Banco banco) : ControllerBase
+public class FilmesController : ControllerBase
 {
+    private readonly Banco banco;
+
+    public FilmesController(Banco banco)
+    {
+        this.banco = banco;
+    }
+
     [HttpGet]
-    public async Task<IActionResult> Listar() => Ok(await Catalogo.Carregar(banco));
+    public async Task<IActionResult> Listar()
+    {
+        return Ok(await Catalogo.Carregar(banco));
+    }
 
     [HttpPost, Authorize(Roles = "Funcionario")]
     public async Task<IActionResult> Adicionar(Filme filme)

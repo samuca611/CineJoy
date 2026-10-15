@@ -4,8 +4,15 @@ using Microsoft.EntityFrameworkCore;
 namespace CineJoy.Api.Controllers;
 
 [ApiController, Route("api/site")]
-public class SiteController(Banco banco) : ControllerBase
+public class SiteController : ControllerBase
 {
+    private readonly Banco banco;
+
+    public SiteController(Banco banco)
+    {
+        this.banco = banco;
+    }
+
     [HttpGet("home")]
     public async Task<IActionResult> Home()
     {

@@ -6,10 +6,20 @@ using Microsoft.EntityFrameworkCore;
 namespace CineJoy.Api.Controllers;
 
 [ApiController, Route("api/sessoes")]
-public class SessoesController(Banco banco) : ControllerBase
+public class SessoesController : ControllerBase
 {
+    private readonly Banco banco;
+
+    public SessoesController(Banco banco)
+    {
+        this.banco = banco;
+    }
+
     [HttpGet]
-    public async Task<IActionResult> Listar() => Ok((await Catalogo.Carregar(banco)).SelectMany(x => x.Sessoes));
+    public async Task<IActionResult> Listar()
+    {
+        return Ok((await Catalogo.Carregar(banco)).SelectMany(x => x.Sessoes));
+    }
     [HttpGet("{id:int}/assentos")]
     public async Task<IActionResult> Assentos(int id) => Ok(await banco.Ingressos.AsNoTracking()
         .Where(x => x.SessaoId == id).Select(x => x.Assento).ToListAsync());
@@ -17,7 +27,8 @@ public class SessoesController(Banco banco) : ControllerBase
     public async Task<IActionResult> Adicionar(Sessao sessao)
     {
         if (!await Valida(sessao)) return BadRequest(new { mensagem = "Filme ou sala indisponivel." });
-        sessao.Id = 0; sessao.Ativo = true;
+        sessao.Id = 0;
+        sessao.Ativo = true;
         banco.Sessoes.Add(sessao);
         banco.Registrar(User.Identity!.Name!, "Adicionou sessao");
         await banco.SaveChangesAsync();
@@ -31,7 +42,8 @@ public class SessoesController(Banco banco) : ControllerBase
         if (await banco.Ingressos.AnyAsync(x => x.SessaoId == id))
             return Conflict(new { mensagem = "Sessao com ingressos vendidos nao pode ser alterada." });
         if (!await Valida(sessao)) return BadRequest(new { mensagem = "Filme ou sala indisponivel." });
-        sessao.Id = id; sessao.Ativo = true;
+        sessao.Id = id;
+        sessao.Ativo = true;
         banco.Entry(atual).CurrentValues.SetValues(sessao);
         banco.Registrar(User.Identity!.Name!, "Editou sessao");
         await banco.SaveChangesAsync();
