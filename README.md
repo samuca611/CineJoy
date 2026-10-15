@@ -25,14 +25,6 @@ Depois acesse:
 http://localhost:3000
 ```
 
-Se preferir usar pnpm:
-
-```powershell
-cd frontend
-pnpm install
-pnpm run dev
-```
-
 ## Observacao
 
 As telas ainda usam dados locais. A API C# tambem usa dados em memoria,
