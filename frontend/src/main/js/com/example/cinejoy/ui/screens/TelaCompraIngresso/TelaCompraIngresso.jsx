@@ -1,12 +1,12 @@
 import { Minus, Plus, ShoppingCart, Ticket } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { requisicao } from "../../../data/api/requisicao.js";
 import BotaoUsuario from "../../components/BotaoUsuario/BotaoUsuario.jsx";
 import Cabecalho from "../../components/Cabecalho/Cabecalho.jsx";
 import Rodape from "../../components/Rodape/Rodape.jsx";
 import TelaPagamento from "../TelaPagamento/TelaPagamento.jsx";
 
 const fileiras = ["K", "J", "I", "H", "G", "F", "E", "D", "C", "B", "A"];
-const assentosBloqueados = ["K5", "K6", "K11", "K12", "I4", "H12", "G4", "G5", "G6", "E9", "E10"];
 const assentosAcessiveis = ["A1", "A2", "A3", "A4"];
 
 function criarAssentos() {
@@ -39,17 +39,34 @@ export default function TelaCompraIngresso({
   voltarInicio
 }) {
   const [assentosSelecionados, setAssentosSelecionados] = useState([]);
-  const sessoes = filme.sessoes || [];
+  const sessoes = (filme.sessoes || []).filter((s) => String(s.unidadeId) === String(unidadeEscolhidaId));
   const [sessaoEscolhida, setSessaoEscolhida] = useState(sessoes[0]?.id || "");
   const [alimentos, setAlimentos] = useState([]);
   const [erro, setErro] = useState("");
   const [pagamentoAberto, setPagamentoAberto] = useState(false);
-  const precoIngresso = 24;
+  const [assentosBloqueados, setAssentosBloqueados] = useState([]);
   const sessao = sessoes.find((item) => item.id === sessaoEscolhida) || sessoes[0];
+  const precoIngresso = Number(sessao?.preco || 0);
   const unidade = unidadeEscolhida || unidades[0];
   const totalIngressos = assentosSelecionados.length * precoIngresso;
   const totalAlimentos = alimentos.reduce((soma, item) => soma + precoProduto(item) * item.quantidade, 0);
   const total = totalIngressos + totalAlimentos;
+
+  useEffect(() => {
+    setAssentosSelecionados([]);
+    setAssentosBloqueados([]);
+    if (!sessao?.id) return;
+    let ativo = true;
+    async function atualizar() {
+      try {
+        const ocupados = await requisicao("/sessoes/" + sessao.id + "/assentos");
+        if (ativo) setAssentosBloqueados(ocupados);
+      } catch (falha) { if (ativo) setErro(falha.message); }
+    }
+    atualizar();
+    const intervalo = setInterval(atualizar, 10000);
+    return () => { ativo = false; clearInterval(intervalo); };
+  }, [sessao?.id]);
 
   function precoProduto(produto) {
     return Number(String(produto.preco).replace(",", ".")) || 0;
@@ -70,7 +87,7 @@ export default function TelaCompraIngresso({
   }
 
   function finalizarCompra() {
-    if (assentosSelecionados.length === 0) {
+    if (!sessao || assentosSelecionados.length === 0) {
       setErro("Selecione pelo menos um assento para continuar.");
       return;
     }
@@ -206,6 +223,7 @@ export default function TelaCompraIngresso({
                           ].join(" ")}
                           key={assento}
                           type="button"
+                          disabled={!sessao || assentosBloqueados.includes(assento)}
                           onClick={() => alternarAssento(assento)}
                           aria-label={`Assento ${assento}`}
                         >
@@ -240,11 +258,11 @@ export default function TelaCompraIngresso({
                 <article key={produto.id}>
                   <span>{produto.nome}</span>
                   <div>
-                    <button type="button" onClick={() => removerAlimento(produto)}>
+                    <button type="button" aria-label={"Remover " + produto.nome} onClick={() => removerAlimento(produto)}>
                       <Minus size={13} />
                     </button>
                     <strong>{alimentos.find((item) => item.id === produto.id)?.quantidade || 0}</strong>
-                    <button type="button" onClick={() => adicionarAlimento(produto)}>
+                    <button type="button" aria-label={"Adicionar " + produto.nome} onClick={() => adicionarAlimento(produto)}>
                       <Plus size={13} />
                     </button>
                   </div>

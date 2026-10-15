@@ -1,11 +1,16 @@
 import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { converterData } from "../../../data/model/datas.js";
 
 function AbasDeData({ datas, dataEscolhida, trocarData }) {
-  const dias = ["Sex.", "Sab.", "Dom.", "Seg.", "Ter.", "Qua."];
+  function mudarData(passo) {
+    if (!datas.length) return;
+    const atual = Math.max(0, datas.indexOf(dataEscolhida));
+    trocarData(datas[(atual + passo + datas.length) % datas.length]);
+  }
 
   return (
     <div className="date-tabs">
-      <button type="button" aria-label="Data anterior">
+      <button type="button" aria-label="Data anterior" onClick={() => mudarData(-1)}>
         <ChevronLeft size={16} />
       </button>
 
@@ -16,12 +21,12 @@ function AbasDeData({ datas, dataEscolhida, trocarData }) {
           onClick={() => trocarData(data)}
           type="button"
         >
-          <span>{dias[index] || "Dia"}</span>
+          <span>{converterData(data).toLocaleDateString("pt-BR", { weekday: "short" })}</span>
           <strong>{data}</strong>
         </button>
       ))}
 
-      <button type="button" aria-label="Proxima data">
+      <button type="button" aria-label="Proxima data" onClick={() => mudarData(1)}>
         <ChevronRight size={16} />
       </button>
     </div>
@@ -36,7 +41,7 @@ function FilmeDaLista({ filme, selecionarFilme }) {
       <div className="movie-copy">
         <h3>{filme.titulo}</h3>
         <p>
-          {filme.duracao || "2hr 25min"} {filme.genero}
+          {filme.duracao} {filme.genero}
         </p>
         <p>
           <strong>Direcao:</strong> {filme.direcao || "Nao informada"}
@@ -63,12 +68,13 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
     .map((filme) => {
       return {
         ...filme,
-        sessoes: (filme.sessoes || []).filter((sessao) => sessao.data === dataEscolhida)
+        sessoes: (filme.sessoes || []).filter((sessao) => sessao.data === dataEscolhida &&
+          sessao.unidadeId === unidadeEscolhida?.id)
       };
     })
     .filter((filme) => filme.sessoes.length > 0);
 
-  const filmesParaMostrar = filmesDoDia.length > 0 ? filmesDoDia : filmes;
+  const filmesParaMostrar = filmesDoDia;
   const filmesOrdenados = [...filmesParaMostrar].sort((a, b) => {
     return ordemDoFilme(a) - ordemDoFilme(b);
   });

@@ -65,7 +65,7 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
                 />
               </button>
               <small>
-                {filme.genero.split("/")[0]} {filme.duracao || "90 min"}
+                {filme.genero.split("/")[0]} {filme.duracao}
               </small>
             </article>
           ))}

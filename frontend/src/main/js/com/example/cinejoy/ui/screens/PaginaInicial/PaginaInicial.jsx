@@ -14,6 +14,13 @@ import { useCineJoyViewModel } from "../../../viewmodel/useCineJoyViewModel.js";
 
 export default function PaginaInicial() {
   const cineJoy = useCineJoyViewModel();
+  return <>
+    {cineJoy.erroApi && <p role="alert">{cineJoy.erroApi}</p>}
+    <Conteudo cineJoy={cineJoy} />
+  </>;
+}
+
+function Conteudo({ cineJoy }) {
   const [textoBusca, setTextoBusca] = useState("");
 
   const busca = textoBusca.toLowerCase();
@@ -26,12 +33,17 @@ export default function PaginaInicial() {
       filme.elenco
     ].join(" ").toLowerCase();
 
-    return dadosDoFilme.includes(busca);
+    return dadosDoFilme.includes(busca) && filme.sessoes.some((s) =>
+      String(s.unidadeId) === String(cineJoy.unidadeEscolhidaId));
   });
 
   function abrirLogin() {
     if (!cineJoy.usuarioLogado) {
       cineJoy.setLoginAberto(true);
+    } else if (cineJoy.usuario.papel === "Funcionario") {
+      cineJoy.setTelaFuncionario(true);
+    } else if (window.confirm("Sair da sua conta?")) {
+      cineJoy.sair();
     }
   }
 
@@ -69,14 +81,18 @@ export default function PaginaInicial() {
         filmes={cineJoy.filmes}
         ingressos={cineJoy.ingressos}
         logs={cineJoy.logs}
-        mudarFilmes={cineJoy.setFilmes}
-        mudarIngressos={cineJoy.setIngressos}
-        mudarLogs={cineJoy.setLogs}
-        mudarProdutos={cineJoy.setProdutos}
-        mudarUnidades={cineJoy.setUnidades}
+        gravarFilme={cineJoy.gravarFilme}
+        removerFilme={cineJoy.removerFilme}
+        gravarProduto={cineJoy.gravarProduto}
+        removerProduto={cineJoy.removerProduto}
+        gravarUnidade={cineJoy.gravarUnidade}
+        removerUnidade={cineJoy.removerUnidade}
+        alterarStatus={cineJoy.alterarStatus}
         produtos={cineJoy.produtos}
-        registrarLog={cineJoy.registrarLog}
-        sair={() => cineJoy.setTelaFuncionario(false)}
+        salas={cineJoy.salas}
+        usuario={cineJoy.usuario}
+        atualizarDados={cineJoy.carregarDados}
+        sair={cineJoy.sair}
         unidades={cineJoy.unidades}
       />
     );
@@ -114,6 +130,7 @@ export default function PaginaInicial() {
           abrirProgramacao={() => cineJoy.voltarParaPrincipal("#programacao")}
           buscarFilme={buscarFilme}
           produtos={cineJoy.produtos}
+          registrarIngresso={cineJoy.registrarIngresso}
           trocarUnidade={cineJoy.setUnidadeEscolhidaId}
           unidadeEscolhidaId={cineJoy.unidadeEscolhidaId}
           unidades={cineJoy.unidades}
@@ -144,7 +161,7 @@ export default function PaginaInicial() {
           abrirLogin={abrirLogin}
           abrirProgramacao={() => cineJoy.voltarParaPrincipal("#programacao")}
           buscarFilme={buscarFilme}
-          filme={cineJoy.filmeCompra}
+          filme={cineJoy.filmes.find((filme) => filme.id === cineJoy.filmeCompra.id) || cineJoy.filmeCompra}
           produtos={cineJoy.produtos}
           registrarIngresso={cineJoy.registrarIngresso}
           trocarUnidade={cineJoy.setUnidadeEscolhidaId}

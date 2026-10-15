@@ -1,301 +1,218 @@
 import { useEffect, useState } from "react";
 import {
-  adicionarFilme,
-  adicionarProduto,
-  adicionarUnidade,
-  buscarDadosDaHome,
-  buscarLocalidades,
-  cadastrarUsuario,
-  comprarIngresso,
-  editarFilme,
-  editarProduto,
-  editarUnidade,
-  excluirFilme,
-  excluirProduto,
-  excluirUnidade,
-  loginFuncionario
+  adicionarFilme, adicionarProduto, adicionarUnidade, buscarDadosDaHome,
+  buscarLocalidades, cadastrarUsuario, comprarIngresso, editarFilme,
+  editarProduto, editarUnidade, excluirFilme, excluirProduto, excluirUnidade,
+  loginUsuario, sairDaConta, buscarSalas, atualizarStatusPedido
 } from "../data/api/api.js";
-import { pegarDatas } from "../data/model/dadosExemplo.js";
+import { pegarDatas } from "../data/model/datas.js";
 
 export function useCineJoyViewModel() {
   const [filmes, setFilmes] = useState([]);
   const [produtos, setProdutos] = useState([]);
   const [unidades, setUnidades] = useState([]);
+  const [salas, setSalas] = useState([]);
   const [unidadeEscolhidaId, setUnidadeEscolhidaId] = useState("");
   const [estados, setEstados] = useState([]);
   const [cidades, setCidades] = useState([]);
   const [ingressos, setIngressos] = useState([]);
   const [logs, setLogs] = useState([]);
   const [erroApi, setErroApi] = useState("");
-  const [dataEscolhida, setDataEscolhida] = useState("25/09");
+  const [dataEscolhida, setDataEscolhida] = useState("");
   const [loginAberto, setLoginAberto] = useState(false);
   const [filmeCompra, setFilmeCompra] = useState(null);
   const [telaAlimentacao, setTelaAlimentacao] = useState(false);
-  const [telaCadastro, setTelaCadastro] = useState(pegarHashAtual() === "#cadastro");
-  const [usuarioLogado, setUsuarioLogado] = useState("");
+  const [telaCadastro, setTelaCadastro] = useState(false);
+  const [usuario, setUsuario] = useState(null);
   const [telaFuncionario, setTelaFuncionario] = useState(false);
-  const datas = pegarDatas(filmes);
-  const unidadeEscolhida = unidades.find((unidade) => String(unidade.id) === String(unidadeEscolhidaId)) || unidades[0] || null;
+  const datas = pegarDatas(filmes, unidadeEscolhidaId);
+  const usuarioLogado = usuario?.nome || "";
+  const unidadeEscolhida = unidades.find((u) => String(u.id) === String(unidadeEscolhidaId)) || unidades[0] || null;
 
   useEffect(() => {
-    carregarDados();
-    carregarLocalidades();
+    setTelaCadastro(window.location.hash === "#cadastro");
+    carregarDados().catch((erro) => setErroApi(erro.message));
+    buscarLocalidades().then((dados) => {
+      setEstados(dados.estados);
+      setCidades(dados.cidades);
+    }).catch((erro) => setErroApi(erro.message));
   }, []);
 
   useEffect(() => {
-    if (datas.length > 0 && !datas.includes(dataEscolhida)) {
-      setDataEscolhida(datas[0]);
-    }
+    if (datas.length && !datas.includes(dataEscolhida)) setDataEscolhida(datas[0]);
   }, [datas, dataEscolhida]);
 
   useEffect(() => {
-    const unidadeExiste = unidades.some((unidade) => String(unidade.id) === String(unidadeEscolhidaId));
-
-    if (unidades.length > 0 && !unidadeExiste) {
+    if (unidades.length && !unidades.some((u) => String(u.id) === String(unidadeEscolhidaId)))
       setUnidadeEscolhidaId(String(unidades[0].id));
-    }
   }, [unidades, unidadeEscolhidaId]);
 
   async function carregarDados() {
-    try {
-      const dados = await buscarDadosDaHome();
-      setFilmes(dados.filmes || []);
-      setProdutos(dados.produtos || []);
-      setUnidades(dados.unidades || []);
-      setIngressos(dados.ingressos || []);
-      setErroApi("");
-    } catch {
-      setErroApi("Nao foi possivel carregar os dados das telas.");
-    }
-  }
-
-  async function carregarLocalidades() {
-    try {
-      const dados = await buscarLocalidades();
-      setEstados(dados.estados || []);
-      setCidades(dados.cidades || []);
-    } catch {
-      setEstados([]);
-      setCidades([]);
-    }
-  }
-
-  function registrarLog(tarefa) {
-    const novoLog = {
-      id: Date.now(),
-      funcionario: usuarioLogado || "Funcionario 1",
-      tarefa,
-      status: "Concluido",
-      data: new Date().toLocaleString("pt-BR")
-    };
-
-    setLogs((listaAtual) => [novoLog, ...listaAtual]);
+    const dados = await buscarDadosDaHome();
+    setFilmes(dados.filmes);
+    setProdutos(dados.produtos);
+    setUnidades(dados.unidades);
+    setUsuario(dados.usuario);
+    setIngressos(dados.ingressos);
+    setLogs(dados.logs);
+    setSalas(await buscarSalas());
+    setErroApi("");
+    return dados;
   }
 
   async function entrar(email, senha) {
-    if (email === "funcionario1@cinejoy.com") {
-      try {
-        const funcionario = await loginFuncionario(email, senha);
-        setUsuarioLogado(funcionario.nomeFunc || "CineJoyfuls");
-        setTelaFuncionario(true);
-        setLoginAberto(false);
-        setErroApi("");
-      } catch {
-        setErroApi("Login de funcionario nao autorizado pelo banco de dados.");
-      }
-
-      return;
-    }
-
-    setUsuarioLogado(email);
+    const conta = await loginUsuario(email, senha);
+    setUsuario(conta);
+    setTelaFuncionario(conta.papel === "Funcionario");
+    setTelaCadastro(false);
     setLoginAberto(false);
+    await carregarDados();
   }
 
-  async function registrarIngresso(dadosDaCompra) {
+  async function sair() {
     try {
-      await comprarIngresso(dadosDaCompra);
+      await sairDaConta();
+      setUsuario(null);
+      setTelaFuncionario(false);
+      setFilmeCompra(null);
       await carregarDados();
-      registrarLog("Venda finalizada");
-    } catch {
-      setErroApi("Nao foi possivel salvar o ingresso no banco.");
-    }
+    } catch (erro) { setErroApi(erro.message); }
   }
 
-  async function cadastrarNovoUsuario(dadosDoUsuario) {
+  async function registrarIngresso(dados) {
+    const pedido = await comprarIngresso(dados);
+    await carregarDados();
+    return pedido;
+  }
+
+  async function cadastrarNovoUsuario(dados) {
     try {
-      const usuario = await cadastrarUsuario(dadosDoUsuario);
-      setUsuarioLogado(usuario.email || dadosDoUsuario.email);
+      const conta = await cadastrarUsuario(dados);
+      setUsuario(conta);
       setTelaCadastro(false);
       setLoginAberto(false);
       window.location.hash = "#top";
-      await carregarLocalidades();
-      setErroApi("");
-      return { deuCerto: true, mensagem: "" };
+      await carregarDados();
+      return { deuCerto: true };
     } catch (erro) {
-      const mensagem = erro.message || "Nao foi possivel cadastrar o usuario.";
-      setErroApi(mensagem);
-      return { deuCerto: false, mensagem };
+      return { deuCerto: false, mensagem: erro.message };
     }
   }
 
-  async function mudarFilmes(novaListaOuFuncao) {
-    const novaLista = typeof novaListaOuFuncao === "function"
-      ? novaListaOuFuncao(filmes)
-      : novaListaOuFuncao;
-
-    setFilmes(novaLista);
-
+  async function gravarFilme(filme, incluir) {
     try {
-      await sincronizarLista(filmes, novaLista, adicionarFilme, editarFilme, excluirFilme);
-      await carregarDados();
-    } catch {
-      setErroApi("Nao foi possivel salvar os filmes.");
-      await carregarDados();
+      let salvo;
+      if (incluir) {
+        salvo = await adicionarFilme(filme);
+      } else {
+        salvo = await editarFilme(filme);
+      }
+
+      const dados = await carregarDados();
+      return dados.filmes.find((item) => item.id === salvo.id);
+    } catch (erro) {
+      setErroApi(erro.message);
+      return null;
     }
   }
 
-  async function mudarProdutos(novaListaOuFuncao) {
-    const novaLista = typeof novaListaOuFuncao === "function"
-      ? novaListaOuFuncao(produtos)
-      : novaListaOuFuncao;
-
-    setProdutos(novaLista);
-
+  async function removerFilme(id) {
     try {
-      await sincronizarLista(produtos, novaLista, adicionarProduto, editarProduto, excluirProduto);
+      await excluirFilme(id);
       await carregarDados();
-    } catch {
-      setErroApi("Nao foi possivel salvar os alimentos.");
-      await carregarDados();
+      return true;
+    } catch (erro) {
+      setErroApi(erro.message);
+      return false;
     }
   }
 
-  async function mudarUnidades(novaListaOuFuncao) {
-    const novaLista = typeof novaListaOuFuncao === "function"
-      ? novaListaOuFuncao(unidades)
-      : novaListaOuFuncao;
-
-    setUnidades(novaLista);
-
+  async function gravarProduto(produto, incluir) {
     try {
-      await sincronizarLista(unidades, novaLista, adicionarUnidade, editarUnidade, excluirUnidade);
-      await carregarDados();
-    } catch {
-      setErroApi("Nao foi possivel salvar as unidades.");
-      await carregarDados();
+      let salvo;
+      if (incluir) {
+        salvo = await adicionarProduto(produto);
+      } else {
+        salvo = await editarProduto(produto);
+      }
+
+      const dados = await carregarDados();
+      return dados.produtos.find((item) => item.id === salvo.id);
+    } catch (erro) {
+      setErroApi(erro.message);
+      return null;
     }
   }
 
-  async function mudarIngressos(novaListaOuFuncao) {
-    const novaLista = typeof novaListaOuFuncao === "function"
-      ? novaListaOuFuncao(ingressos)
-      : novaListaOuFuncao;
+  async function removerProduto(id) {
+    try {
+      await excluirProduto(id);
+      await carregarDados();
+      return true;
+    } catch (erro) {
+      setErroApi(erro.message);
+      return false;
+    }
+  }
 
-    setIngressos(novaLista);
+  async function gravarUnidade(unidade, incluir) {
+    try {
+      let salvo;
+      if (incluir) {
+        salvo = await adicionarUnidade(unidade);
+      } else {
+        salvo = await editarUnidade(unidade);
+      }
+
+      const dados = await carregarDados();
+      return dados.unidades.find((item) => item.id === salvo.id);
+    } catch (erro) {
+      setErroApi(erro.message);
+      return null;
+    }
+  }
+
+  async function removerUnidade(id) {
+    try {
+      await excluirUnidade(id);
+      await carregarDados();
+      return true;
+    } catch (erro) {
+      setErroApi(erro.message);
+      return false;
+    }
+  }
+
+  async function alterarStatus(pedidoId, status) {
+    try {
+      await atualizarStatusPedido(pedidoId, status);
+      await carregarDados();
+    } catch (erro) {
+      setErroApi(erro.message);
+    }
   }
 
   function irParaSecao(secao) {
     window.location.hash = secao;
-
-    const elemento = document.querySelector(secao);
-    if (elemento) {
-      elemento.scrollIntoView();
-    }
+    document.querySelector(secao)?.scrollIntoView();
   }
 
   function voltarParaPrincipal(secao) {
     setTelaAlimentacao(false);
+    setTelaCadastro(false);
     setFilmeCompra(null);
-
-    setTimeout(() => {
-      irParaSecao(secao);
-    }, 0);
+    setTimeout(() => irParaSecao(secao), 0);
   }
 
   return {
-    dataEscolhida,
-    datas,
-    erroApi,
-    estados,
-    cidades,
-    filmes,
-    filmeCompra,
-    ingressos,
-    logs,
-    loginAberto,
-    produtos,
-    telaAlimentacao,
-    telaCadastro,
-    telaFuncionario,
-    unidadeEscolhida,
-    unidadeEscolhidaId,
-    unidades,
-    usuarioLogado,
-    cadastrarNovoUsuario,
-    entrar,
-    irParaSecao,
-    mudarFilmes,
-    mudarIngressos,
-    mudarProdutos,
-    mudarUnidades,
-    registrarIngresso,
-    registrarLog,
-    setDataEscolhida,
-    setFilmeCompra,
-    setIngressos: mudarIngressos,
-    setLoginAberto,
-    setLogs,
-    setProdutos: mudarProdutos,
-    setTelaAlimentacao,
-    setTelaCadastro,
-    setTelaFuncionario,
-    setUnidadeEscolhidaId,
-    setUnidades: mudarUnidades,
-    setFilmes: mudarFilmes,
+    dataEscolhida, datas, erroApi, estados, cidades, filmes, filmeCompra,
+    ingressos, logs, loginAberto, produtos, salas, telaAlimentacao, telaCadastro,
+    telaFuncionario, unidadeEscolhida, unidadeEscolhidaId, unidades, usuarioLogado,
+    usuario, cadastrarNovoUsuario, entrar, sair, carregarDados, irParaSecao,
+    gravarFilme, removerFilme, gravarProduto, removerProduto,
+    gravarUnidade, removerUnidade, alterarStatus, registrarIngresso,
+    setDataEscolhida, setFilmeCompra, setLoginAberto, setTelaAlimentacao,
+    setTelaCadastro, setTelaFuncionario, setUnidadeEscolhidaId,
     voltarParaPrincipal
   };
-}
-
-async function sincronizarLista(listaAntiga, listaNova, adicionar, editar, excluir) {
-  const removidos = [];
-  const adicionados = [];
-  const editados = [];
-
-  for (const antigo of listaAntiga) {
-    const aindaExiste = listaNova.some((novo) => Number(novo.id) === Number(antigo.id));
-
-    if (!aindaExiste) {
-      removidos.push(antigo);
-    }
-  }
-
-  for (const novo of listaNova) {
-    const jaExistia = listaAntiga.some((antigo) => Number(antigo.id) === Number(novo.id));
-
-    if (!jaExistia) {
-      adicionados.push(novo);
-    } else {
-      editados.push(novo);
-    }
-  }
-
-  for (const item of removidos) {
-    await excluir(item.id);
-  }
-
-  for (const item of adicionados) {
-    await adicionar(item);
-  }
-
-  for (const item of editados) {
-    await editar(item);
-  }
-}
-
-function pegarHashAtual() {
-  if (typeof window === "undefined") {
-    return "";
-  }
-
-  return window.location.hash;
 }
