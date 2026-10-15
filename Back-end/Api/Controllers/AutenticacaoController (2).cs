@@ -23,10 +23,16 @@ public class AutenticacaoController : ControllerBase
     [HttpPost("entrar"), EnableRateLimiting("login")]
     public async Task<IActionResult> Entrar(Login dados)
     {
-        var email = dados.Email.Trim().ToLowerInvariant();
-        var usuario = await banco.Usuarios.FirstOrDefaultAsync(x => x.Ativo && (x.Email == email || x.UserLogin == email));
+        string email = dados.Email.Trim().ToLowerInvariant();
+        Usuario? usuario = await banco.Usuarios.FirstOrDefaultAsync(x => x.Ativo && (x.Email == email || x.UserLogin == email));
         if (usuario == null || new PasswordHasher<Usuario>().VerifyHashedPassword(usuario, usuario.SenhaHash, dados.Senha) == PasswordVerificationResult.Failed)
-            return Unauthorized(new { mensagem = "Email ou senha incorretos." });
+        {
+            return Unauthorized(new
+            {
+                mensagem = "Email ou senha incorretos."
+            });
+        }
+
         await Contas.Entrar(HttpContext, usuario);
         return Ok(Contas.Resumo(usuario));
     }
@@ -34,8 +40,8 @@ public class AutenticacaoController : ControllerBase
     [HttpGet("sessao"), Authorize]
     public async Task<IActionResult> Sessao()
     {
-        var id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var usuario = await banco.Usuarios.FindAsync(id);
+        int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Usuario? usuario = await banco.Usuarios.FindAsync(id);
         return usuario == null ? Unauthorized() : Ok(Contas.Resumo(usuario));
     }
 
