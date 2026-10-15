@@ -1,4 +1,4 @@
-namespace CineJoy.ApiHenry.Models;
+namespace CineJoy.Api.Models;
 
 public class Funcionario
 {

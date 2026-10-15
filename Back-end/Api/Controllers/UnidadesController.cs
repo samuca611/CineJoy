@@ -1,8 +1,8 @@
-using CineJoy.ApiHenry.Data;
-using CineJoy.ApiHenry.Models;
+using CineJoy.Api.Data;
+using CineJoy.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CineJoy.ApiHenry.Controllers;
+namespace CineJoy.Api.Controllers;
 
 [ApiController]
 [Route("api/unidades")]
@@ -11,7 +11,7 @@ public class UnidadesController : ControllerBase
     [HttpGet]
     public ActionResult<List<Unidade>> Listar()
     {
-        return BancoFakeHenry.Unidades;
+        return BancoMemoria.Unidades;
     }
 }
 
