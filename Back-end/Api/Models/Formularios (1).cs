@@ -34,8 +34,8 @@ public class Compra
 {
     public Guid Chave { get; set; }
     public int? SessaoId { get; set; }
-    public List<string> Assentos { get; set; } = [];
-    public List<ProdutoCompra> Produtos { get; set; } = [];
+    public List<string> Assentos { get; set; } = new List<string>();
+    public List<ProdutoCompra> Produtos { get; set; } = new List<ProdutoCompra>();
     [Required, MaxLength(20)]
     public string FormaPagamento { get; set; } = "";
     public bool SimularPagamento { get; set; }

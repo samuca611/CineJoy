@@ -12,7 +12,7 @@ public class Pedido
     public string FormaPagamento { get; set; } = "";
     [MaxLength(20)]
     public string Status { get; set; } = "Pendente";
-    public List<ItemPedido> Itens { get; set; } = [];
+    public List<ItemPedido> Itens { get; set; } = new List<ItemPedido>();
 }
 
 public class ItemPedido

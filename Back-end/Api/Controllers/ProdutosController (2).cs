@@ -33,8 +33,12 @@ public class ProdutosController : ControllerBase
     [HttpPut("{id:int}"), Authorize(Roles = "Funcionario")]
     public async Task<IActionResult> Editar(int id, Produto produto)
     {
-        var atual = await banco.Produtos.FindAsync(id);
-        if (atual == null) return NotFound();
+        Produto? atual = await banco.Produtos.FindAsync(id);
+        if (atual == null)
+        {
+            return NotFound();
+        }
+
         produto.Id = id;
         produto.Ativo = true;
         banco.Entry(atual).CurrentValues.SetValues(produto);
@@ -45,8 +49,12 @@ public class ProdutosController : ControllerBase
     [HttpDelete("{id:int}"), Authorize(Roles = "Funcionario")]
     public async Task<IActionResult> Excluir(int id)
     {
-        var produto = await banco.Produtos.FindAsync(id);
-        if (produto == null) return NotFound();
+        Produto? produto = await banco.Produtos.FindAsync(id);
+        if (produto == null)
+        {
+            return NotFound();
+        }
+
         produto.Ativo = false;
         banco.Registrar(User.Identity!.Name!, $"Desativou alimento: {produto.Nome}");
         await banco.SaveChangesAsync();
