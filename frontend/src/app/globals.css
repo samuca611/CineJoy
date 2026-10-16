@@ -1,1 +1,16 @@
 @import "../main/js/com/example/cinejoy/ui/styles.css";
+@import "../main/js/com/example/cinejoy/ui/components/Cabecalho/cabecalho.css";
+@import "../main/js/com/example/cinejoy/ui/estrutura.css";
+@import "../main/js/com/example/cinejoy/ui/screens/PaginaInicial/inicio.css";
+@import "../main/js/com/example/cinejoy/ui/components/Rodape/rodape.css";
+@import "../main/js/com/example/cinejoy/ui/components/BotaoUsuario/botaoUsuario.css";
+@import "../main/js/com/example/cinejoy/ui/compras.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaCadastro/cadastro.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaAlimentacao/alimentacao.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaCompraIngresso/ingresso.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaPagamento/pagamento.css";
+@import "../main/js/com/example/cinejoy/ui/components/ModalLogin/login.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaFuncionario/funcionario.css";
+@import "../main/js/com/example/cinejoy/ui/responsivo.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaMinhaConta/conta.css";
+@import "../main/js/com/example/cinejoy/ui/screens/TelaLogs/logs.css";
