@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ArrowLeft, UserPlus } from "lucide-react";
 import BotaoUsuario from "../../components/BotaoUsuario/BotaoUsuario.jsx";
 import Cabecalho from "../../components/Cabecalho/Cabecalho.jsx";
 import Rodape from "../../components/Rodape/Rodape.jsx";
@@ -38,6 +39,7 @@ export default function TelaCadastro({
   
   // armazena mensagens de erro ou de sucesso exibidas ao usuário
   const [mensagem, setMensagem] = useState("");
+  const [enviando, setEnviando] = useState(false);
 
   // busca o objeto do estado correspondente com base no nome ou na sigla digitados
   const estadoEscolhido = estados.find((estado) => {
@@ -103,6 +105,7 @@ export default function TelaCadastro({
   // função assíncrona que valida os dados preenchidos e envia a solicitação de cadastro para o sistema
   async function enviarCadastro(evento) {
     evento.preventDefault();
+    if (enviando) return;
     setMensagem("");
     const cpf = formulario.cpf.replace(/\D/g, "");
     const uf = formulario.estadoSigla.trim();
@@ -132,12 +135,18 @@ export default function TelaCadastro({
       return;
     }
 
-    const resultado = await cadastrarUsuario(formulario);
-
-    if (resultado.deuCerto) {
-      setMensagem("Cadastro realizado com sucesso.");
-    } else {
-      setMensagem(resultado.mensagem);
+    setEnviando(true);
+    try {
+      const resultado = await cadastrarUsuario(formulario);
+      if (resultado.deuCerto) {
+        setMensagem("Cadastro realizado com sucesso.");
+      } else {
+        setMensagem(resultado.mensagem);
+      }
+    } catch (erro) {
+      setMensagem(erro.message);
+    } finally {
+      setEnviando(false);
     }
   }
 
@@ -157,22 +166,20 @@ export default function TelaCadastro({
         usuarioLogado={usuarioLogado}
       />
 
-      <main className="cadastro-page">
-        <section className="cadastro-banner"></section>
-        <section className="cadastro-toolbar">
+      <main className="area-usuario">
+        <section className="food-banner" aria-label="Espaco para poster"></section>
+        <section className="conta-conteudo">
+        <div className="conta-titulo">
           {/* botão interativo que aciona a função de voltar para a página inicial */}
-          <button type="button" onClick={voltarInicio}>
-            Voltar para inicio
+          <button className="conta-voltar" type="button" onClick={voltarInicio} title="Voltar para inicio" aria-label="Voltar para inicio">
+            <ArrowLeft size={22} />
           </button>
-          <div>
-            <p>Cadastro CineJoy</p>
-            <h1>Crie sua conta</h1>
-          </div>
-        </section>
+          <h1>Crie sua conta</h1>
+        </div>
 
         {/* formulário de cadastro do usuário */}
-        <section className="cadastro-area">
-          <form className="cadastro-form" onSubmit={enviarCadastro}>
+          <form className="conta-formulario" onSubmit={enviarCadastro} aria-label="Dados do cadastro">
+          <fieldset disabled={enviando}>
             <label>
               CPF
               <input
@@ -180,6 +187,8 @@ export default function TelaCadastro({
                 onChange={(evento) => mudarCampo("cpf", evento.target.value)}
                 placeholder="11 numeros"
                 maxLength="14"
+                inputMode="numeric"
+                required
               />
             </label>
 
@@ -190,6 +199,8 @@ export default function TelaCadastro({
                 value={formulario.nome}
                 onChange={(evento) => mudarCampo("nome", evento.target.value)}
                 maxLength="50"
+                autoComplete="name"
+                required
               />
             </label>
 
@@ -201,6 +212,8 @@ export default function TelaCadastro({
                 value={formulario.email}
                 onChange={(evento) => mudarCampo("email", evento.target.value)}
                 maxLength="60"
+                autoComplete="email"
+                required
               />
             </label>
 
@@ -211,6 +224,8 @@ export default function TelaCadastro({
                 type="date"
                 value={formulario.dataNascimento}
                 onChange={(evento) => mudarCampo("dataNascimento", evento.target.value)}
+                autoComplete="bday"
+                required
               />
             </label>
 
@@ -218,10 +233,12 @@ export default function TelaCadastro({
               Telefone
               {/*  entrada de dados controlada para o telefone */}
               <input
+                type="tel"
                 value={formulario.telefone}
                 onChange={(evento) => mudarCampo("telefone", evento.target.value)}
-                placeholder="999999999"
+                placeholder="DDD e numero"
                 maxLength="11"
+                autoComplete="tel-national"
               />
             </label>
 
@@ -232,6 +249,8 @@ export default function TelaCadastro({
                 value={formulario.estadoNome}
                 onChange={(evento) => mudarEstado(evento.target.value)}
                 maxLength="50"
+                autoComplete="address-level1"
+                required
               />
               {/*define as opções disponíveis para o campo de estado */}
               <datalist id="lista-estados">
@@ -248,6 +267,7 @@ export default function TelaCadastro({
                 onChange={(evento) => mudarSigla(evento.target.value)}
                 maxLength="2"
                 placeholder="SP"
+                required
               />
             </label>
 
@@ -258,6 +278,8 @@ export default function TelaCadastro({
                 value={formulario.cidadeNome}
                 onChange={(evento) => mudarCidade(evento.target.value)}
                 maxLength="30"
+                autoComplete="address-level2"
+                required
               />
               <datalist id="lista-cidades">
                 {cidadesDoEstado.map((cidade) => (
@@ -272,6 +294,8 @@ export default function TelaCadastro({
                 value={formulario.userLogin}
                 onChange={(evento) => mudarCampo("userLogin", evento.target.value)}
                 maxLength="25"
+                autoComplete="username"
+                required
               />
             </label>
 
@@ -281,17 +305,23 @@ export default function TelaCadastro({
                 type="password"
                 value={formulario.senha}
                 onChange={(evento) => mudarCampo("senha", evento.target.value)}
+                minLength={6}
+                maxLength={100}
+                autoComplete="new-password"
+                required
               />
             </label>
 
-            {/* dispara o envio do formulário */}
-            <button type="submit">Cadastrar</button>
-            {mensagem !== "" && <p>{mensagem}</p>}
+            </fieldset>
+            {mensagem !== "" && <p role="alert">{mensagem}</p>}
+            <button type="submit" disabled={enviando}>
+              <UserPlus size={19} /> {enviando ? "Cadastrando..." : "Cadastrar"}
+            </button>
           </form>
         </section>
       </main>
       <Rodape />
-      <BotaoUsuario />
+      <BotaoUsuario abrirConta={abrirLogin} />
     </>
   );
 }

@@ -30,6 +30,20 @@ public class Login
     [Required, MaxLength(100)]
     public string Senha { get; set; } = "";
 }
+public class EditarConta
+{
+    [Required, MaxLength(100)]
+    public string Nome { get; set; } = "";
+    public DateTime DataNascimento { get; set; }
+    [MaxLength(11), RegularExpression(@"^\d{10,11}$")]
+    public string Telefone { get; set; } = "";
+    [Required, MaxLength(80)]
+    public string EstadoNome { get; set; } = "";
+    [Required, RegularExpression(@"^[A-Za-z]{2}$")]
+    public string EstadoSigla { get; set; } = "";
+    [Required, MaxLength(80)]
+    public string CidadeNome { get; set; } = "";
+}
 public class Compra
 {
     public Guid Chave { get; set; }

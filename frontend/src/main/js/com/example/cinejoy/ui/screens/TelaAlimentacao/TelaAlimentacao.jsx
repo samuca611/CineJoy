@@ -182,7 +182,7 @@ export default function TelaAlimentacao({
       </main>
 
       <Rodape />
-      <BotaoUsuario />
+      <BotaoUsuario abrirConta={abrirLogin} />
     </>
   );
 }

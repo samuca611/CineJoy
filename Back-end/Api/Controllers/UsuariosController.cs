@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 namespace CineJoy.Api.Controllers;
 
 [ApiController, Route("api/usuarios")]
@@ -29,6 +30,43 @@ public class UsuariosController : ControllerBase
     {
         return Ok(await banco.Usuarios.AsNoTracking()
         .Where(x => x.Papel == "Cliente" && x.Ativo).ToListAsync());
+    }
+
+    [HttpGet("minha-conta"), Authorize]
+    public async Task<IActionResult> MinhaConta()
+    {
+        int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Usuario? usuario = await banco.Usuarios.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
+        if (usuario == null)
+        {
+            return NotFound();
+        }
+        return Ok(Contas.Perfil(usuario));
+    }
+
+    [HttpPut("minha-conta"), Authorize]
+    public async Task<IActionResult> EditarMinhaConta(EditarConta dados)
+    {
+        if (dados.DataNascimento < new DateTime(1900, 1, 1) || dados.DataNascimento > DateTime.Today)
+        {
+            return BadRequest(new { mensagem = "Data de nascimento invalida." });
+        }
+
+        int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        Usuario? usuario = await banco.Usuarios.FirstOrDefaultAsync(x => x.Id == id && x.Ativo);
+        if (usuario == null)
+        {
+            return NotFound();
+        }
+
+        usuario.Nome = dados.Nome.Trim();
+        usuario.DataNascimento = dados.DataNascimento;
+        usuario.Telefone = dados.Telefone;
+        usuario.EstadoNome = dados.EstadoNome.Trim();
+        usuario.EstadoSigla = dados.EstadoSigla.ToUpperInvariant();
+        usuario.CidadeNome = dados.CidadeNome.Trim();
+        await banco.SaveChangesAsync();
+        return Ok(Contas.Perfil(usuario));
     }
 
     [HttpGet("localidades")]

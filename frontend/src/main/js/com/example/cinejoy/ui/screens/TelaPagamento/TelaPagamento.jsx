@@ -184,7 +184,7 @@ export default function TelaPagamento({
       </main>
 
       <Rodape />
-      <BotaoUsuario />
+      <BotaoUsuario abrirConta={abrirLogin} />
     </>
   );
 }

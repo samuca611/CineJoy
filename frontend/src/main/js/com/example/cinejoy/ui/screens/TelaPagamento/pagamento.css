@@ -1,0 +1,71 @@
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  padding: 28px;
+}
+
+.payment-methods h2 {
+  grid-column: 1 / 4;
+  margin: 0;
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: 32px;
+}
+
+.payment-methods > button {
+  min-height: 126px;
+  border: 3px solid #d48b70;
+  border-radius: 20px;
+  background: #7b1f00;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.payment-methods > button.active {
+  border-color: white;
+  background: var(--laranja);
+}
+
+.card-form {
+  grid-column: 1 / 4;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  border-radius: 20px;
+  padding: 20px;
+  background: #7b1f00;
+}
+
+.card-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.card-form input {
+  min-height: 52px;
+  border: 0;
+  border-radius: 16px;
+  padding: 0 14px;
+}
+
+.pix-box {
+  grid-column: 1 / 4;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  border-radius: 20px;
+  padding: 26px;
+  background: #7b1f00;
+}
+
+.payment-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  border-radius: 18px;
+  background: var(--laranja);
+  font-weight: 800;
+}

@@ -14,6 +14,12 @@ export async function buscarSessao() {
 export function buscarLocalidades() {
   return requisicao("/usuarios/localidades");
 }
+export function buscarMinhaConta() {
+  return requisicao("/usuarios/minha-conta");
+}
+export function salvarMinhaConta(dados) {
+  return requisicao("/usuarios/minha-conta", "PUT", dados);
+}
 export function cadastrarUsuario(usuario) {
   return requisicao("/usuarios", "POST", {
     ...usuario, cpf: usuario.cpf.replace(/\D/g, ""), estado: undefined, cidade: undefined

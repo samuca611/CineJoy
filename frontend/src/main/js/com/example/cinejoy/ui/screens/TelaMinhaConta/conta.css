@@ -1,0 +1,240 @@
+.area-usuario {
+  background: var(--laranja-claro);
+}
+
+.conta-conteudo {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 36px 24px 56px;
+}
+
+.conta-titulo,
+.conta-abas,
+.pedido-cabecalho,
+.pedido-total,
+.pedidos-ferramentas,
+.pedido-alimentos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.conta-titulo {
+  justify-content: flex-start;
+  margin-bottom: 24px;
+  color: var(--vermelho-escuro);
+}
+
+.conta-titulo h1 {
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: 28px;
+  margin: 0;
+}
+
+.conta-conteudo button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: var(--vermelho-escuro);
+  color: var(--branco);
+  font-size: 15px;
+}
+
+.conta-conteudo button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.conta-conteudo button:focus-visible,
+.conta-formulario input:focus-visible,
+.conta-formulario select:focus-visible {
+  outline: 3px solid var(--preto);
+  outline-offset: 3px;
+}
+
+.conta-conteudo .conta-voltar,
+.pedidos-ferramentas button {
+  width: 44px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.conta-abas {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--vermelho-escuro);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.conta-abas button[aria-current="page"] {
+  background: var(--laranja);
+  color: var(--preto);
+}
+
+.conta-abas .conta-sair {
+  margin-left: auto;
+}
+
+.conta-formulario {
+  padding: 28px;
+  background: var(--vermelho);
+  border-radius: 8px;
+}
+
+.conta-formulario fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 24px;
+  border: 0;
+  padding: 0;
+  margin: 0 0 24px;
+  min-width: 0;
+}
+
+.conta-formulario label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.conta-formulario input,
+.conta-formulario select {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--branco);
+  color: var(--preto);
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.conta-formulario input[readonly] {
+  background: var(--cinza-claro);
+}
+
+.conta-formulario button[type="submit"] {
+  min-width: 200px;
+  background: var(--laranja);
+  color: var(--preto);
+}
+
+.pedidos-ferramentas {
+  color: var(--vermelho-escuro);
+  margin-bottom: 16px;
+}
+
+.pedido-item {
+  padding: 24px;
+  margin-bottom: 20px;
+  background: var(--vermelho);
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+.pedido-cabecalho {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--laranja-claro);
+  padding-bottom: 16px;
+}
+
+.pedido-item h2 {
+  margin: 0 0 6px;
+  font-size: 21px;
+}
+
+.pedido-item h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+.pedido-cabecalho time,
+.pedido-situacao {
+  font-size: 14px;
+}
+
+.pedido-situacao {
+  color: var(--laranja-claro);
+}
+
+.pedido-item ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pedido-ingressos {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.pedido-ingressos img {
+  width: 76px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.pedido-ingressos div {
+  min-width: 0;
+}
+
+.pedido-ingressos li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.pedido-alimentos {
+  padding: 20px 0;
+}
+
+.pedido-alimentos li {
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.pedido-alimentos li strong {
+  flex-shrink: 0;
+}
+
+.pedido-total {
+  border-top: 1px solid var(--laranja-claro);
+  padding-top: 16px;
+  flex-wrap: wrap;
+}
+
+.conta-aviso {
+  color: var(--vermelho-escuro);
+  padding: 24px 0;
+}
+
+.conta-conteudo > p,
+.meus-pedidos > [role="alert"] {
+  color: var(--vermelho-escuro);
+}
+
+@media (max-width: 600px) {
+  .conta-conteudo { padding: 28px 16px 40px; }
+  .conta-formulario { padding: 20px 16px; }
+  .conta-formulario fieldset { grid-template-columns: minmax(0, 1fr); }
+  .conta-abas { gap: 8px; }
+  .conta-abas .conta-sair { margin-left: 0; }
+  .pedido-item { padding: 20px 16px; }
+  .pedido-ingressos { gap: 12px; }
+  .conta-formulario button[type="submit"] { width: 100%; min-width: 0; }
+}

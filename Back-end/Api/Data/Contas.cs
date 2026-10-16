@@ -61,4 +61,21 @@ public static class Contas
         }, CookieAuthenticationDefaults.AuthenticationScheme);
         return context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identidade));
     }
+
+    public static object Perfil(Usuario usuario)
+    {
+        return new
+        {
+            usuario.Id,
+            usuario.Nome,
+            usuario.Cpf,
+            usuario.Email,
+            usuario.UserLogin,
+            usuario.DataNascimento,
+            usuario.Telefone,
+            usuario.EstadoNome,
+            usuario.EstadoSigla,
+            usuario.CidadeNome
+        };
+    }
 }

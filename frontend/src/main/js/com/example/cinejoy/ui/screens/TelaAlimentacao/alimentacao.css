@@ -1,0 +1,131 @@
+.food-card,
+.cart-panel,
+.seat-panel,
+.ticket-summary,
+.payment-methods,
+.payment-summary {
+  border-radius: 20px;
+  background: var(--vermelho);
+}
+
+.food-card {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.food-card img {
+  width: 150px;
+  height: 180px;
+  border-radius: 16px;
+  object-fit: cover;
+  background: var(--cinza-claro);
+}
+
+.food-card h2,
+.food-card p {
+  margin: 0;
+}
+
+.food-card h2 {
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: 24px;
+}
+
+.food-card p {
+  margin-top: 8px;
+}
+
+.food-card strong {
+  display: block;
+  margin-top: 14px;
+  font-size: 22px;
+}
+
+.food-card button,
+.finish-order {
+  min-height: 58px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--laranja);
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.food-card button {
+  grid-column: 1 / 3;
+}
+
+.cart-panel,
+.ticket-summary,
+.payment-summary {
+  align-self: start;
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.cart-panel h2 {
+  margin: 0;
+  font-family: "Manrope", Arial, sans-serif;
+  font-size: 30px;
+}
+
+.empty-cart {
+  margin: 0;
+}
+
+.empty-message {
+  grid-column: 1 / 4;
+  margin: 0;
+  border-radius: 18px;
+  padding: 24px;
+  background: #e69b4b;
+  color: var(--vermelho-escuro);
+  font-weight: 700;
+  text-align: center;
+}
+
+.cart-list,
+.ticket-food-list,
+.payment-foods {
+  display: grid;
+  gap: 12px;
+}
+
+.cart-item,
+.ticket-food-list article,
+.payment-foods {
+  border-radius: 16px;
+  padding: 14px;
+  background: #7b1f00;
+}
+
+.cart-item div,
+.ticket-food-list div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cart-item button,
+.ticket-food-list button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--laranja);
+  color: white;
+}
+
+.cart-total,
+.ticket-total,
+.payment-total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #d48b70;
+  padding-top: 16px;
+  font-size: 20px;
+}

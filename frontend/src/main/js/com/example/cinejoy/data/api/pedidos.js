@@ -1,4 +1,7 @@
 import { requisicao } from "./requisicao.js";
+export function buscarMeusPedidos() {
+  return requisicao("/pedidos/meus");
+}
 export function comprarIngresso(dados) {
   return requisicao("/pedidos", "POST", {
     chave: dados.chave,
