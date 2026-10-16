@@ -1,30 +1,88 @@
 using CineJoy.Api.Data;
 using CineJoy.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 namespace CineJoy.Api.Controllers;
 
-[ApiController]
-[Route("api/salas")]
+[ApiController, Route("api/salas")]
 public class SalasController : ControllerBase
 {
-    [HttpGet]
-    public ActionResult<List<Sala>> Listar()
+    private readonly Banco banco;
+
+    public SalasController(Banco banco)
     {
-        return BancoMemoria.Salas;
+        this.banco = banco;
     }
 
-    [HttpPost]
-    public ActionResult<Sala> Adicionar(Sala sala)
+    [HttpGet]
+    public async Task<IActionResult> Listar()
     {
-        if (!BancoMemoria.Unidades.Any(item => item.Id == sala.UnidadeId))
-            return BadRequest("Unidade nao encontrada.");
-        if (string.IsNullOrWhiteSpace(sala.Numero))
-            return BadRequest("Informe o numero da sala.");
+        return Ok(await banco.Salas.AsNoTracking().Where(x => x.Ativo).ToListAsync());
+    }
+    [HttpPost, Authorize(Roles = "Funcionario")]
+    public async Task<IActionResult> Adicionar(Sala sala)
+    {
+        if (!await banco.Unidades.AnyAsync(x => x.Id == sala.UnidadeId && x.Ativo))
+        {
+            return BadRequest(new
+            {
+                mensagem = "Unidade nao encontrada."
+            });
+        }
 
-        sala.Id = BancoMemoria.Salas.Select(item => item.Id).DefaultIfEmpty(0).Max() + 1;
-        BancoMemoria.Salas.Add(sala);
-        return sala;
+        sala.Id = 0;
+        sala.Ativo = true;
+        banco.Salas.Add(sala);
+        banco.Registrar(User.Identity!.Name!, $"Adicionou sala: {sala.Numero}");
+        await banco.SaveChangesAsync();
+        return Ok(sala);
+    }
+    [HttpPut("{id:int}"), Authorize(Roles = "Funcionario")]
+    public async Task<IActionResult> Editar(int id, Sala sala)
+    {
+        Sala? atual = await banco.Salas.FindAsync(id);
+        if (atual == null)
+        {
+            return NotFound();
+        }
+
+        if (await banco.Sessoes.AnyAsync(s => s.SalaId == id && banco.Ingressos.Any(i => i.SessaoId == s.Id)) &&
+            (atual.UnidadeId != sala.UnidadeId || atual.Numero != sala.Numero))
+        {
+            return Conflict(new
+            {
+                mensagem = "Sala com vendas nao pode mudar de unidade ou numero."
+            });
+        }
+
+        if (!await banco.Unidades.AnyAsync(x => x.Id == sala.UnidadeId && x.Ativo))
+        {
+            return BadRequest(new
+            {
+                mensagem = "Unidade nao encontrada."
+            });
+        }
+
+        sala.Id = id;
+        sala.Ativo = true;
+        banco.Entry(atual).CurrentValues.SetValues(sala);
+        banco.Registrar(User.Identity!.Name!, $"Editou sala: {sala.Numero}");
+        await banco.SaveChangesAsync();
+        return Ok(atual);
+    }
+    [HttpDelete("{id:int}"), Authorize(Roles = "Funcionario")]
+    public async Task<IActionResult> Excluir(int id)
+    {
+        Sala? sala = await banco.Salas.FindAsync(id);
+        if (sala == null)
+        {
+            return NotFound();
+        }
+
+        sala.Ativo = false;
+        banco.Registrar(User.Identity!.Name!, $"Desativou sala: {sala.Numero}");
+        await banco.SaveChangesAsync();
+        return NoContent();
     }
 }
-
