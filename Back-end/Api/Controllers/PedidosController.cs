@@ -28,6 +28,54 @@ public class PedidosController : ControllerBase
             .Where(x => funcionario || x.UsuarioId == id).OrderByDescending(x => x.Id).ToListAsync());
     }
 
+    [HttpGet("meus")]
+    public async Task<IActionResult> MeusPedidos()
+    {
+        int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        List<Pedido> pedidos = await banco.Pedidos.AsNoTracking()
+            .Where(x => x.UsuarioId == id).OrderByDescending(x => x.Id).ToListAsync();
+
+        var alimentos = await (
+            from item in banco.ItensPedido.AsNoTracking()
+            join pedido in banco.Pedidos on item.PedidoId equals pedido.Id
+            join produto in banco.Produtos on item.ProdutoId equals produto.Id
+            where pedido.UsuarioId == id
+            select new
+            {
+                item.PedidoId, item.ProdutoId, produto.Nome,
+                item.Quantidade, item.Preco
+            }).ToListAsync();
+
+        var ingressos = await (
+            from ingresso in banco.Ingressos.AsNoTracking()
+            join pedido in banco.Pedidos on ingresso.PedidoId equals pedido.Id
+            join sessao in banco.Sessoes on ingresso.SessaoId equals sessao.Id
+            join filme in banco.Filmes on sessao.FilmeId equals filme.Id
+            join sala in banco.Salas on sessao.SalaId equals sala.Id
+            join unidade in banco.Unidades on sala.UnidadeId equals unidade.Id
+            where pedido.UsuarioId == id
+            select new
+            {
+                ingresso.PedidoId, ingresso.Id, ingresso.Assento, ingresso.Preco,
+                filme = filme.Titulo, imagem = filme.Imagem, sala = sala.Numero,
+                unidade = unidade.Nome, sessao.Data, sessao.Horario
+            }).ToListAsync();
+
+        List<object> resultado = new List<object>();
+        foreach (Pedido pedido in pedidos)
+        {
+            resultado.Add(new
+            {
+                pedido.Id,
+                criadoEm = DateTime.SpecifyKind(pedido.CriadoEm, DateTimeKind.Utc),
+                pedido.Total, pedido.Status, pedido.FormaPagamento,
+                alimentos = alimentos.Where(x => x.PedidoId == pedido.Id).ToList(),
+                ingressos = ingressos.Where(x => x.PedidoId == pedido.Id).ToList()
+            });
+        }
+        return Ok(resultado);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Comprar(Compra compra)
     {
