@@ -254,7 +254,7 @@ export default function TelaCompraIngresso({
             <div className="ticket-food-list">
               {produtos.length === 0 ? (
                 <p className="empty-cart">Nenhum alimento cadastrado.</p>
-              ) : produtos.slice(0, 3).map((produto) => (
+              ) : produtos.map((produto) => (
                 <article key={produto.id}>
                   <span>{produto.nome}</span>
                   <div>
@@ -283,7 +283,7 @@ export default function TelaCompraIngresso({
       </main>
 
       <Rodape />
-      <BotaoUsuario />
+      <BotaoUsuario abrirConta={abrirLogin} />
     </>
   );
 }

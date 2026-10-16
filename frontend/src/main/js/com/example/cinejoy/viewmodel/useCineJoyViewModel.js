@@ -6,6 +6,7 @@ import {
   loginUsuario, sairDaConta, buscarSalas, atualizarStatusPedido
 } from "../data/api/api.js";
 import { pegarDatas } from "../data/model/datas.js";
+import { useNavegacao } from "./useNavegacao.js";
 
 export function useCineJoyViewModel() {
   const [filmes, setFilmes] = useState([]);
@@ -19,18 +20,13 @@ export function useCineJoyViewModel() {
   const [logs, setLogs] = useState([]);
   const [erroApi, setErroApi] = useState("");
   const [dataEscolhida, setDataEscolhida] = useState("");
-  const [loginAberto, setLoginAberto] = useState(false);
-  const [filmeCompra, setFilmeCompra] = useState(null);
-  const [telaAlimentacao, setTelaAlimentacao] = useState(false);
-  const [telaCadastro, setTelaCadastro] = useState(false);
   const [usuario, setUsuario] = useState(null);
-  const [telaFuncionario, setTelaFuncionario] = useState(false);
+  const navegacao = useNavegacao(usuario);
   const datas = pegarDatas(filmes, unidadeEscolhidaId);
   const usuarioLogado = usuario?.nome || "";
   const unidadeEscolhida = unidades.find((u) => String(u.id) === String(unidadeEscolhidaId)) || unidades[0] || null;
 
   useEffect(() => {
-    setTelaCadastro(window.location.hash === "#cadastro");
     carregarDados().catch((erro) => setErroApi(erro.message));
     buscarLocalidades().then((dados) => {
       setEstados(dados.estados);
@@ -63,9 +59,12 @@ export function useCineJoyViewModel() {
   async function entrar(email, senha) {
     const conta = await loginUsuario(email, senha);
     setUsuario(conta);
-    setTelaFuncionario(conta.papel === "Funcionario");
-    setTelaCadastro(false);
-    setLoginAberto(false);
+    navegacao.setLoginAberto(false);
+    if (conta.papel === "Funcionario") {
+      navegacao.abrirTela("funcionario");
+    } else if (navegacao.tela === "cadastro") {
+      navegacao.voltarParaPrincipal();
+    }
     await carregarDados();
   }
 
@@ -73,8 +72,8 @@ export function useCineJoyViewModel() {
     try {
       await sairDaConta();
       setUsuario(null);
-      setTelaFuncionario(false);
-      setFilmeCompra(null);
+      navegacao.setLoginAberto(false);
+      navegacao.voltarParaPrincipal();
       await carregarDados();
     } catch (erro) { setErroApi(erro.message); }
   }
@@ -89,9 +88,8 @@ export function useCineJoyViewModel() {
     try {
       const conta = await cadastrarUsuario(dados);
       setUsuario(conta);
-      setTelaCadastro(false);
-      setLoginAberto(false);
-      window.location.hash = "#top";
+      navegacao.setLoginAberto(false);
+      navegacao.voltarParaPrincipal();
       await carregarDados();
       return { deuCerto: true };
     } catch (erro) {
@@ -192,27 +190,25 @@ export function useCineJoyViewModel() {
     }
   }
 
-  function irParaSecao(secao) {
-    window.location.hash = secao;
-    document.querySelector(secao)?.scrollIntoView();
+  function atualizarConta(conta) {
+    setUsuario((atual) => atual && atual.id === conta.id ? { ...atual, nome: conta.nome } : atual);
   }
 
-  function voltarParaPrincipal(secao) {
-    setTelaAlimentacao(false);
-    setTelaCadastro(false);
-    setFilmeCompra(null);
-    setTimeout(() => irParaSecao(secao), 0);
+  function pedirNovoLogin() {
+    setUsuario(null);
+    navegacao.abrirTela("inicio");
+    navegacao.setLoginAberto(true);
+    setErroApi("Sua sessao expirou. Entre novamente.");
   }
 
   return {
-    dataEscolhida, datas, erroApi, estados, cidades, filmes, filmeCompra,
-    ingressos, logs, loginAberto, produtos, salas, telaAlimentacao, telaCadastro,
-    telaFuncionario, unidadeEscolhida, unidadeEscolhidaId, unidades, usuarioLogado,
-    usuario, cadastrarNovoUsuario, entrar, sair, carregarDados, irParaSecao,
+    ...navegacao,
+    dataEscolhida, datas, erroApi, estados, cidades, filmes,
+    ingressos, logs, produtos, salas,
+    unidadeEscolhida, unidadeEscolhidaId, unidades, usuarioLogado,
+    usuario, cadastrarNovoUsuario, entrar, sair, carregarDados,
     gravarFilme, removerFilme, gravarProduto, removerProduto,
     gravarUnidade, removerUnidade, alterarStatus, registrarIngresso,
-    setDataEscolhida, setFilmeCompra, setLoginAberto, setTelaAlimentacao,
-    setTelaCadastro, setTelaFuncionario, setUnidadeEscolhidaId,
-    voltarParaPrincipal
+    setDataEscolhida, setUnidadeEscolhidaId, atualizarConta, pedirNovoLogin
   };
 }
