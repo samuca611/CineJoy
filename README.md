@@ -30,12 +30,6 @@ Depois acesse:
 http://localhost:3000
 ```
 
-## Observacao
-
-Esta copia ainda depende dos arquivos restantes das entregas de Henry e Giovana.
-Ha chamadas para modulos que ainda nao foram adicionados, tanto no frontend
-quanto na API. Os comandos abaixo precisam dessas partes para funcionar.
-
 ## Como rodar a API
 
 Em outro terminal, na raiz do projeto:
@@ -45,5 +39,3 @@ cd Back-end/Api
 dotnet run
 ```
 
-Acesse http://localhost:8080/api/filmes ou http://localhost:8080/api/unidades.
-Os detalhes dos vinculos e do banco estao em `Back-end/README.md`.
