@@ -19,7 +19,7 @@ e `Data` guarda o acesso ao banco. A API retorna JSON para as telas React.
 Abra o PowerShell na pasta do projeto e execute:
 
 ```powershell
-cd frontend
+C:\Users\samue\OneDrive\Documentos\GitHub\CineJoyWEB2\frontend
 npm install
 npm run dev
 ```
@@ -35,7 +35,7 @@ http://localhost:3000
 Em outro terminal, na raiz do projeto:
 
 ```powershell
-cd Back-end/Api
+C:\Users\samue\OneDrive\Documentos\GitHub\CineJoyWEB2\Back-end\Api
 dotnet run
 ```
 
