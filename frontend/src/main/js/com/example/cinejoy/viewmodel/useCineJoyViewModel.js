@@ -198,7 +198,7 @@ export function useCineJoyViewModel() {
     setUsuario(null);
     navegacao.abrirTela("inicio");
     navegacao.setLoginAberto(true);
-    setErroApi("Sua sessao expirou. Entre novamente.");
+    setErroApi("Sua sessão expirou. Entre novamente.");
   }
 
   return {

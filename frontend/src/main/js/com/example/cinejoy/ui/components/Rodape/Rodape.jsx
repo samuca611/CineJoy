@@ -4,7 +4,7 @@ export default function Rodape() {
       <div className="footer-brand">
         <img src="/assets/logo-cinejoy-footer.png" alt="CineJoy" />
       </div>
-      <p>Informacoes gerais da Marca</p>
+      <p>Informações gerais da Marca</p>
     </footer>
   );
 }

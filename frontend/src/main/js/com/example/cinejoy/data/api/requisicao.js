@@ -16,7 +16,7 @@ export async function requisicao(caminho, metodo = "GET", dados) {
       "http://" + window.location.hostname + ":8080";
     resposta = await fetch(servidor + "/api" + caminho, opcoes);
   } catch {
-    throw new Error("Nao foi possivel acessar a API. Confira se ela esta ligada.");
+    throw new Error("Não foi possível acessar a API. Confira se ela está ligada.");
   }
 
   if (resposta.status === 204) {
@@ -35,7 +35,7 @@ export async function requisicao(caminho, metodo = "GET", dados) {
   }
 
   if (!resposta.ok) {
-    let mensagem = "Nao foi possivel concluir a operacao.";
+    let mensagem = "Não foi possível concluir a operação.";
 
     if (resposta.status === 401) {
       mensagem = "Entre na sua conta para continuar.";

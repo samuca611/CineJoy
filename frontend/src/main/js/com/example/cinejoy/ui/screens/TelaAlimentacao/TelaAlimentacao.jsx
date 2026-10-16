@@ -110,10 +110,10 @@ export default function TelaAlimentacao({
 
         <section className="food-toolbar">
           <button type="button" onClick={voltarInicio}>
-            Voltar para inicio
+            Voltar para início
           </button>
           <div>
-            <p>Alimentacao CineJoy</p>
+            <p>Alimentação CineJoy</p>
             <h1>Escolha seus alimentos</h1>
           </div>
         </section>
@@ -123,7 +123,7 @@ export default function TelaAlimentacao({
           <div className="food-products">
             {produtos.length === 0 ? (
               <p className="empty-message">
-                Nenhum alimento cadastrado. Entre como funcionario para adicionar produtos.
+                Nenhum alimento cadastrado. Entre como funcionário para adicionar produtos.
               </p>
               // mapeia e exibe cada produto cadastrado em formato de cartão
             ) : produtos.map((produto) => (

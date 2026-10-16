@@ -39,12 +39,12 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
     <section className="orange-band" id="catalogo">
       <div className="content-wrap">
         <div className="section-heading">
-          <p>Confira | Pre venda</p>
+          <p>Confira | Pré-venda</p>
           <div className="arrow-group">
             <button type="button" aria-label="Anterior" onClick={voltarPosters}>
               <ChevronLeft size={19} />
             </button>
-            <button type="button" aria-label="Proximo" onClick={avancarPosters}>
+            <button type="button" aria-label="Próximo" onClick={avancarPosters}>
               <ChevronRight size={19} />
             </button>
           </div>
@@ -53,7 +53,7 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
         <div className="catalog-row">
           {filmesVisiveis.length === 0 ? (
             <p className="empty-message">
-              {textoBusca ? "Nenhum filme encontrado." : "Nenhum filme cadastrado. Entre como funcionario para adicionar filmes."}
+              {textoBusca ? "Nenhum filme encontrado." : "Nenhum filme cadastrado. Entre como funcionário para adicionar filmes."}
             </p>
           ) : filmesVisiveis.map((filme) => (
             <article className="catalog-card" key={filme.id}>
@@ -61,7 +61,7 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
               <button type="button" onClick={() => selecionarFilme(filme)}>
                 <img
                   src={filme.posterCatalogo || filme.imagem}
-                  alt={`Poster de ${filme.titulo}`}
+                  alt={`Pôster de ${filme.titulo}`}
                 />
               </button>
               <small>

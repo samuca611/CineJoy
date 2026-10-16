@@ -26,7 +26,7 @@ function AbasDeData({ datas, dataEscolhida, trocarData }) {
         </button>
       ))}
 
-      <button type="button" aria-label="Proxima data" onClick={() => mudarData(1)}>
+      <button type="button" aria-label="Próxima data" onClick={() => mudarData(1)}>
         <ChevronRight size={16} />
       </button>
     </div>
@@ -36,7 +36,7 @@ function AbasDeData({ datas, dataEscolhida, trocarData }) {
 function FilmeDaLista({ filme, selecionarFilme }) {
   return (
     <article className="movie-item" onClick={() => selecionarFilme(filme)}>
-      <img src={filme.imagem} alt={`Poster de ${filme.titulo}`} />
+      <img src={filme.imagem} alt={`Pôster de ${filme.titulo}`} />
 
       <div className="movie-copy">
         <h3>{filme.titulo}</h3>
@@ -44,10 +44,10 @@ function FilmeDaLista({ filme, selecionarFilme }) {
           {filme.duracao} {filme.genero}
         </p>
         <p>
-          <strong>Direcao:</strong> {filme.direcao || "Nao informada"}
+          <strong>Direção:</strong> {filme.direcao || "Não informada"}
         </p>
         <p>
-          <strong>Elenco:</strong> {filme.elenco || "Nao informado"}
+          <strong>Elenco:</strong> {filme.elenco || "Não informado"}
         </p>
       </div>
     </article>
@@ -88,7 +88,7 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
           <aside className="food-panel" id="alimentacao">
             <img src={produto.imagem || "/assets/pipoca.jpg"} alt={produto.nome} />
             <div>
-              <p>Alimentacao</p>
+              <p>Alimentação</p>
               <h2>{produto.nome}</h2>
               <span>{produto.descricao}</span>
             </div>
@@ -113,7 +113,7 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
           <div className="movie-list">
             {filmesOrdenados.length === 0 ? (
               <p className="empty-message">
-                {textoBusca ? "Nenhum filme encontrado na busca." : "Nenhum filme cadastrado para a programacao."}
+                {textoBusca ? "Nenhum filme encontrado na busca." : "Nenhum filme cadastrado para a programação."}
               </p>
             ) : filmesOrdenados.slice(0, 3).map((filme) => (
               <FilmeDaLista filme={filme} key={filme.id} selecionarFilme={selecionarFilme} />

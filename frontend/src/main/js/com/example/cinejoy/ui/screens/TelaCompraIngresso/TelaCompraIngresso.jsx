@@ -183,7 +183,7 @@ export default function TelaCompraIngresso({
 
         <section className="ticket-toolbar">
           <button type="button" onClick={voltarInicio}>
-            Voltar para inicio
+            Voltar para início
           </button>
           <div>
             <h1>{filme.titulo}</h1>

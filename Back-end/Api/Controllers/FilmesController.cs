@@ -38,7 +38,7 @@ public class FilmesController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Selecione uma sala cadastrada, data DD/MM/AAAA e horario HH:mm validos."
+                    mensagem = "Selecione uma sala cadastrada, data DD/MM/AAAA e horário HH:mm válidos."
                 });
             }
 
@@ -72,7 +72,7 @@ public class FilmesController : ControllerBase
             {
                 return Conflict(new
                 {
-                    mensagem = "Uma sessao com ingressos vendidos nao pode ser removida ou remarcada."
+                    mensagem = "Uma sessão com ingressos vendidos não pode ser removida ou remarcada."
                 });
             }
 
@@ -87,7 +87,7 @@ public class FilmesController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Sala, data ou horario invalidos."
+                    mensagem = "Sala, data ou horário inválidos."
                 });
             }
 

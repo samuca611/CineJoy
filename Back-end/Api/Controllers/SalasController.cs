@@ -27,7 +27,7 @@ public class SalasController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Unidade nao encontrada."
+                mensagem = "Unidade não encontrada."
             });
         }
 
@@ -52,7 +52,7 @@ public class SalasController : ControllerBase
         {
             return Conflict(new
             {
-                mensagem = "Sala com vendas nao pode mudar de unidade ou numero."
+                mensagem = "Sala com vendas não pode mudar de unidade ou número."
             });
         }
 
@@ -60,7 +60,7 @@ public class SalasController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Unidade nao encontrada."
+                mensagem = "Unidade não encontrada."
             });
         }
 

@@ -84,7 +84,7 @@ public class PedidosController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Chave da compra obrigatoria."
+                mensagem = "Chave da compra obrigatória."
             });
         }
 
@@ -92,7 +92,7 @@ public class PedidosController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Forma de pagamento invalida."
+                mensagem = "Forma de pagamento inválida."
             });
         }
 
@@ -127,7 +127,7 @@ public class PedidosController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Assentos invalidos ou repetidos."
+                    mensagem = "Assentos inválidos ou repetidos."
                 });
             }
 
@@ -136,7 +136,7 @@ public class PedidosController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Assentos invalidos ou repetidos."
+                    mensagem = "Assentos inválidos ou repetidos."
                 });
             }
 
@@ -154,7 +154,7 @@ public class PedidosController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Sessao indisponivel."
+                    mensagem = "Sessão indisponível."
                 });
             }
 
@@ -162,7 +162,7 @@ public class PedidosController : ControllerBase
             {
                 return Conflict(new
                 {
-                    mensagem = "Um dos assentos ja foi comprado. Selecione outros assentos."
+                    mensagem = "Um dos assentos já foi comprado. Selecione outros assentos."
                 });
             }
 
@@ -183,7 +183,7 @@ public class PedidosController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Quantidade invalida."
+                    mensagem = "Quantidade inválida."
                 });
             }
 
@@ -193,7 +193,7 @@ public class PedidosController : ControllerBase
             {
                 return BadRequest(new
                 {
-                    mensagem = "Quantidade invalida."
+                    mensagem = "Quantidade inválida."
                 });
             }
 
@@ -211,7 +211,7 @@ public class PedidosController : ControllerBase
             {
                 return Conflict(new
                 {
-                    mensagem = "Alimento indisponivel ou estoque insuficiente."
+                    mensagem = "Alimento indisponível ou estoque insuficiente."
                 });
             }
 

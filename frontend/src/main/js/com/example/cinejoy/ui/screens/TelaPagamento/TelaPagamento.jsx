@@ -106,7 +106,7 @@ export default function TelaPagamento({
               onClick={() => setFormaPagamento("Cartao")}
             >
               <CreditCard size={28} />
-              Cartao
+              Cartão
             </button>
             <button
               className={formaPagamento === "Boleto" ? "active" : ""}
@@ -120,21 +120,21 @@ export default function TelaPagamento({
             {formaPagamento === "Cartao" && (
               <div className="pix-box">
                 <CreditCard size={84} />
-                <p>Simulacao com cartao. Nenhum valor sera cobrado.</p>
+                <p>Simulação com cartão. Nenhum valor será cobrado.</p>
               </div>
             )}
 
             {formaPagamento === "Pix" && (
               <div className="pix-box">
                 <QrCode size={94} />
-                <p>Simulacao Pix. Nenhum codigo de cobranca sera gerado.</p>
+                <p>Simulação Pix. Nenhum código de cobrança será gerado.</p>
               </div>
             )}
 
             {formaPagamento === "Boleto" && (
               <div className="pix-box">
                 <Banknote size={84} />
-                <p>Simulacao de boleto. Nenhum boleto sera emitido.</p>
+                <p>Simulação de boleto. Nenhum boleto será emitido.</p>
               </div>
             )}
           </div>
@@ -143,8 +143,8 @@ export default function TelaPagamento({
             {filme && <img src={filme.imagem} alt={filme.titulo} />}
             <h2>Resumo da compra</h2>
             {filme && <p><strong>Filme:</strong> {filme.titulo}</p>}
-            <p><strong>Unidade:</strong> {unidade ? unidade.nome : "Nao informada"}</p>
-            <p><strong>Sessao:</strong> {sessao?.data} - {sessao?.horario}</p>
+            <p><strong>Unidade:</strong> {unidade ? unidade.nome : "Não informada"}</p>
+            <p><strong>Sessão:</strong> {sessao?.data} - {sessao?.horario}</p>
             <p><strong>Assentos:</strong> {assentos.join(", ")}</p>
             <p><strong>Ingressos:</strong> R$ {totalIngressos.toFixed(2).replace(".", ",")}</p>
 
@@ -171,13 +171,13 @@ export default function TelaPagamento({
               </div>
             ) : (
               <button className="finish-order" type="button" disabled={enviando} onClick={confirmarPagamento}>
-                {enviando ? "Salvando..." : "Confirmar simulacao"}
+                {enviando ? "Salvando..." : "Confirmar simulação"}
               </button>
             )}
 
             {erro && <p role="alert">{erro}</p>}
             <button className="secondary-action" type="button" onClick={voltarInicio}>
-              Voltar para inicio
+              Voltar para início
             </button>
           </aside>
         </section>

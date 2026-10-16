@@ -116,7 +116,7 @@ app.Use(async (context, next) =>
         {
             mensagem = erro.Number == 1205
             ? "Outra compra alterou os mesmos dados. Confira os assentos e tente novamente."
-            : "Banco indisponivel. Confira a conexao e a estrutura das tabelas."
+            : "Banco indisponível. Confira a conexão e a estrutura das tabelas."
         });
     }
     catch (InvalidOperationException erro) when (erro.InnerException is SqlException)
@@ -125,7 +125,7 @@ app.Use(async (context, next) =>
         context.Response.StatusCode = 503;
         await context.Response.WriteAsJsonAsync(new
         {
-            mensagem = "Banco indisponivel. Confira a conexao e a estrutura das tabelas."
+            mensagem = "Banco indisponível. Confira a conexão e a estrutura das tabelas."
         });
     }
 });
@@ -145,7 +145,7 @@ app.MapGet("/api/saude", async (Banco banco) =>
             pagamento = "Simulacao"
         });
     }
-    catch { return Results.Json(new { mensagem = "Banco indisponivel ou tabelas pendentes." }, statusCode: 503); }
+    catch { return Results.Json(new { mensagem = "Banco indisponível ou tabelas pendentes." }, statusCode: 503); }
 });
 app.MapControllers();
 app.Run();

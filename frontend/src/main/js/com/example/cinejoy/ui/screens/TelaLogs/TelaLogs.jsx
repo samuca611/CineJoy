@@ -24,20 +24,20 @@ export default function TelaLogs({ logs }) {
         <p className="logs-empty">Nenhuma atividade registrada.</p>
       ) : (
         <div className="logs-lista">
-          <table className="logs-table" aria-label="Atividades dos funcionarios">
+          <table className="logs-table" aria-label="Atividades dos funcionários">
             <thead><tr>
-              <th scope="col">Funcionario</th>
+              <th scope="col">Funcionário</th>
               <th scope="col">Atividade</th>
-              <th scope="col">Situacao</th>
-              <th scope="col">Data e hora <small>Brasilia</small></th>
+              <th scope="col">Situação</th>
+              <th scope="col">Data e hora <small>Brasília</small></th>
             </tr></thead>
             <tbody>{logs.map((log) => {
               const data = formatarData(log.data);
               return <tr key={log.id}>
-                <td data-label="Funcionario">{log.funcionario}</td>
+                <td data-label="Funcionário">{log.funcionario}</td>
                 <td data-label="Atividade">{log.tarefa}</td>
-                <td data-label="Situacao"><span className="log-status">
-                  {log.status === "Concluido" && <CheckCircle2 size={16} />}{log.status}
+                <td data-label="Situação"><span className="log-status">
+                  {log.status === "Concluido" && <CheckCircle2 size={16} />}{log.status === "Concluido" ? "Concluído" : log.status}
                 </span></td>
                 <td data-label="Data e hora"><time dateTime={data.original || undefined}>
                   <span>{data.dia}</span><small>{data.hora}</small>

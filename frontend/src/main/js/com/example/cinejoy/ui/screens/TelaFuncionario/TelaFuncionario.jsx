@@ -52,12 +52,12 @@ function CabecalhoFuncionario({ pagina, trocarPagina, sair }) {
         <img src="/assets/logo-cinejoyfuls.png" alt="CineJoyfuls" />
       </div>
 
-      <nav className="func-nav" aria-label="Navegacao funcionario">
+      <nav className="func-nav" aria-label="Navegação do funcionário">
         <button className={pagina === "cinema" ? "active" : ""} type="button" onClick={() => trocarPagina("cinema")}>
           Cinema
         </button>
         <button className={pagina === "alimentacao" ? "active" : ""} type="button" onClick={() => trocarPagina("alimentacao")}>
-          Alimentacao
+          Alimentação
         </button>
         <button className={pagina === "ingressos" ? "active" : ""} type="button" onClick={() => trocarPagina("ingressos")}>
           Ingressos
@@ -83,7 +83,7 @@ function CabecalhoFuncionario({ pagina, trocarPagina, sair }) {
 function LateralFuncionario({ titulo, imagem, children, funcionario }) {
   return (
     <aside className="func-side">
-      <h2>AREA DO FUNCIONARIO</h2>
+      <h2>ÁREA DO FUNCIONÁRIO</h2>
       <label>
         Nome:
         <input value={funcionario?.nome || ""} readOnly />
@@ -122,7 +122,7 @@ function BotoesOperacao({ operacao, trocarOperacao }) {
 function textoVazio(tipo) {
   return (
     <div className="delete-box">
-      <p>Nenhum {tipo} cadastrado. Use a opcao Incluir para adicionar.</p>
+      <p>Nenhum {tipo} cadastrado. Use a opção Incluir para adicionar.</p>
     </div>
   );
 }
@@ -229,7 +229,7 @@ function TelaCinema({ filmes, gravarFilme, removerFilme, salas, unidades, funcio
       <LateralFuncionario funcionario={funcionario} titulo={formulario.titulo || "Filme"} imagem={formulario.imagem || "/assets/filme.jpg"} />
 
       <section className="func-panel">
-        <h1>Cadastro, edicao e exclusao de filmes</h1>
+        <h1>Cadastro, edição e exclusão de filmes</h1>
         <BotoesOperacao operacao={operacao} trocarOperacao={trocarOperacao} />
 
         {semCadastro ? textoVazio("filme") : (
@@ -255,21 +255,21 @@ function TelaCinema({ filmes, gravarFilme, removerFilme, salas, unidades, funcio
             ) : (
               <form className="func-form" onSubmit={salvarFilme}>
                 <label>Nome<input value={formulario.titulo} onChange={(evento) => mudarCampo("titulo", evento.target.value)} required /></label>
-                <label>Genero<input value={formulario.genero} onChange={(evento) => mudarCampo("genero", evento.target.value)} /></label>
-                <label>Duracao<input value={formulario.duracao} onChange={(evento) => mudarCampo("duracao", evento.target.value)} /></label>
-                <label>Classificacao<input value={formulario.classificacao} onChange={(evento) => mudarCampo("classificacao", evento.target.value)} /></label>
-                <label>Direcao<input value={formulario.direcao} onChange={(evento) => mudarCampo("direcao", evento.target.value)} /></label>
+                <label>Gênero<input value={formulario.genero} onChange={(evento) => mudarCampo("genero", evento.target.value)} /></label>
+                <label>Duração<input value={formulario.duracao} onChange={(evento) => mudarCampo("duracao", evento.target.value)} /></label>
+                <label>Classificação<input value={formulario.classificacao} onChange={(evento) => mudarCampo("classificacao", evento.target.value)} /></label>
+                <label>Direção<input value={formulario.direcao} onChange={(evento) => mudarCampo("direcao", evento.target.value)} /></label>
                 <label>Elenco<input value={formulario.elenco} onChange={(evento) => mudarCampo("elenco", evento.target.value)} /></label>
-                <label>Data da sessao<input value={formulario.dataSessao} onChange={(evento) => mudarCampo("dataSessao", evento.target.value)} /></label>
-                <label>Horario<input value={formulario.horarioSessao} onChange={(evento) => mudarCampo("horarioSessao", evento.target.value)} /></label>
+                <label>Data da sessão<input value={formulario.dataSessao} onChange={(evento) => mudarCampo("dataSessao", evento.target.value)} /></label>
+                <label>Horário<input value={formulario.horarioSessao} onChange={(evento) => mudarCampo("horarioSessao", evento.target.value)} /></label>
                 <label>Sala<select required value={formulario.salaId} onChange={(evento) => mudarCampo("salaId", evento.target.value)}>
                   <option value="">Selecione</option>
                   {salas.map((sala) => <option key={sala.id} value={sala.id}>{unidades.find((u) => u.id === sala.unidadeId)?.nome} - Sala {sala.numero}</option>)}
                 </select></label>
-                <label>Preco do ingresso<input type="number" min="0.01" step="0.01" value={formulario.preco} onChange={(evento) => mudarCampo("preco", evento.target.value)} required /></label>
+                <label>Preço do ingresso<input type="number" min="0.01" step="0.01" value={formulario.preco} onChange={(evento) => mudarCampo("preco", evento.target.value)} required /></label>
                 <label>Formato<input value={formulario.formato} onChange={(evento) => mudarCampo("formato", evento.target.value)} /></label>
                 <label className="wide">Imagem principal<input value={formulario.imagem} onChange={(evento) => mudarCampo("imagem", evento.target.value)} /></label>
-                <label className="wide">Poster do catalogo<input value={formulario.posterCatalogo} onChange={(evento) => mudarCampo("posterCatalogo", evento.target.value)} /></label>
+                <label className="wide">Pôster do catálogo<input value={formulario.posterCatalogo} onChange={(evento) => mudarCampo("posterCatalogo", evento.target.value)} /></label>
                 <button type="submit">{operacao === "Incluir" ? "Adicionar" : "Salvar"}</button>
               </form>
             )}
@@ -338,7 +338,7 @@ function TelaAlimentacaoFuncionario({ produtos, gravarProduto, removerProduto, f
     <main className="func-main">
       <LateralFuncionario funcionario={funcionario} titulo={formulario.nome || "Alimento"} imagem={formulario.imagem || "/assets/pipoca.jpg"} />
       <section className="func-panel">
-        <h1>Cadastro, edicao e exclusao de alimentos</h1>
+        <h1>Cadastro, edição e exclusão de alimentos</h1>
         <BotoesOperacao operacao={operacao} trocarOperacao={trocarOperacao} />
 
         {semCadastro ? textoVazio("alimento") : (
@@ -360,9 +360,9 @@ function TelaAlimentacaoFuncionario({ produtos, gravarProduto, removerProduto, f
             ) : (
               <form className="func-form" onSubmit={salvarProduto}>
                 <label>Nome<input value={formulario.nome} onChange={(evento) => setFormulario({ ...formulario, nome: evento.target.value })} required /></label>
-                <label>Preco R$<input value={formulario.preco} onChange={(evento) => setFormulario({ ...formulario, preco: evento.target.value })} /></label>
+                <label>Preço R$<input value={formulario.preco} onChange={(evento) => setFormulario({ ...formulario, preco: evento.target.value })} /></label>
                 <label>Estoque<input type="number" value={formulario.estoque} onChange={(evento) => setFormulario({ ...formulario, estoque: evento.target.value })} /></label>
-                <label className="wide">Descricao<input value={formulario.descricao} onChange={(evento) => setFormulario({ ...formulario, descricao: evento.target.value })} /></label>
+                <label className="wide">Descrição<input value={formulario.descricao} onChange={(evento) => setFormulario({ ...formulario, descricao: evento.target.value })} /></label>
                 <label className="wide">Imagem<input value={formulario.imagem} onChange={(evento) => setFormulario({ ...formulario, imagem: evento.target.value })} /></label>
                 <button type="submit">{operacao === "Incluir" ? "Adicionar" : "Salvar"}</button>
               </form>
@@ -388,7 +388,7 @@ function TelaIngressos({ ingressos, alterarStatus, funcionario }) {
     <main className="func-main">
       <LateralFuncionario funcionario={funcionario} titulo="Dados do ingresso" imagem="/assets/ingresso.png" />
       <section className="func-panel">
-        <h1>Visualizacao do ingresso do usuario</h1>
+        <h1>Visualização do ingresso do usuário</h1>
 
         {ingressos.length === 0 ? textoVazio("ingresso") : (
           <>
@@ -399,15 +399,15 @@ function TelaIngressos({ ingressos, alterarStatus, funcionario }) {
               </select>
             </label>
             <div className="func-info-grid">
-              <span>Nome do usuario<strong>{ingresso.usuario}</strong></span>
+              <span>Nome do usuário<strong>{ingresso.usuario}</strong></span>
               <span>Id do ingresso<strong>{ingresso.id}</strong></span>
               <span>Comida<strong>{ingresso.comida}</strong></span>
               <span>Assento<strong>{ingresso.assento}</strong></span>
-              <span>Unidade - Sala - Sessao<strong>{ingresso.unidade}</strong></span>
+              <span>Unidade - Sala - Sessão<strong>{ingresso.unidade}</strong></span>
               <span>Filme<strong>{ingresso.filme}</strong></span>
             </div>
             <div className="payment-box">
-              <p>Situacao do pagamento</p>
+              <p>Situação do pagamento</p>
               <button type="button" onClick={() => trocarStatus("Simulado")}>Simulado</button>
               <button type="button" onClick={() => trocarStatus("Pendente")}>Pendente</button>
               <strong>{ingresso.status}</strong>
@@ -495,7 +495,7 @@ function TelaUnidades({ unidades, gravarUnidade, removerUnidade, funcionario }) 
               <form className="func-form" onSubmit={salvarUnidade}>
                 <label>Nome da unidade<input value={formulario.nome} onChange={(evento) => setFormulario({ ...formulario, nome: evento.target.value })} required /></label>
                 <label>CEP<input value={formulario.cep} onChange={(evento) => setFormulario({ ...formulario, cep: evento.target.value })} /></label>
-                <label>Endereco<input value={formulario.endereco} onChange={(evento) => setFormulario({ ...formulario, endereco: evento.target.value })} /></label>
+                <label>Endereço<input value={formulario.endereco} onChange={(evento) => setFormulario({ ...formulario, endereco: evento.target.value })} /></label>
                 <label>Complemento<input value={formulario.complemento} onChange={(evento) => setFormulario({ ...formulario, complemento: evento.target.value })} /></label>
                 <button type="submit">{operacao === "Incluir" ? "Adicionar" : "Salvar"}</button>
               </form>
@@ -512,15 +512,15 @@ function TelaHomeFuncionario({ trocarPagina }) {
     <main className="func-main single">
       <section className="func-panel home-panel">
         <img src="/assets/logo-cinejoyfuls.png" alt="CineJoyfuls" />
-        <h1>Qual area deseja gerenciar?</h1>
+        <h1>Qual área deseja gerenciar?</h1>
         <div className="home-buttons">
           <button type="button" onClick={() => trocarPagina("cinema")}>Cinema</button>
-          <button type="button" onClick={() => trocarPagina("alimentacao")}>Alimentacao</button>
+          <button type="button" onClick={() => trocarPagina("alimentacao")}>Alimentação</button>
           <button type="button" onClick={() => trocarPagina("ingressos")}>Ingressos</button>
           <button type="button" onClick={() => trocarPagina("unidades")}>Unidades</button>
           <button type="button" onClick={() => trocarPagina("logs")}>Logs</button>
           <button type="button" onClick={() => trocarPagina("salas")}>Salas</button>
-          <button type="button" onClick={() => trocarPagina("sessoes")}>Sessoes</button>
+          <button type="button" onClick={() => trocarPagina("sessoes")}>Sessões</button>
         </div>
       </section>
     </main>

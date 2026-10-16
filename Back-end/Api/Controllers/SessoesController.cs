@@ -34,14 +34,14 @@ public class SessoesController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Filme ou sala indisponivel."
+                mensagem = "Filme ou sala indisponível."
             });
         }
 
         sessao.Id = 0;
         sessao.Ativo = true;
         banco.Sessoes.Add(sessao);
-        banco.Registrar(User.Identity!.Name!, "Adicionou sessao");
+        banco.Registrar(User.Identity!.Name!, "Adicionou sessão");
         await banco.SaveChangesAsync();
         return Ok(sessao);
     }
@@ -58,7 +58,7 @@ public class SessoesController : ControllerBase
         {
             return Conflict(new
             {
-                mensagem = "Sessao com ingressos vendidos nao pode ser alterada."
+                mensagem = "Sessão com ingressos vendidos não pode ser alterada."
             });
         }
 
@@ -66,14 +66,14 @@ public class SessoesController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Filme ou sala indisponivel."
+                mensagem = "Filme ou sala indisponível."
             });
         }
 
         sessao.Id = id;
         sessao.Ativo = true;
         banco.Entry(atual).CurrentValues.SetValues(sessao);
-        banco.Registrar(User.Identity!.Name!, "Editou sessao");
+        banco.Registrar(User.Identity!.Name!, "Editou sessão");
         await banco.SaveChangesAsync();
         return Ok(atual);
     }
@@ -87,7 +87,7 @@ public class SessoesController : ControllerBase
         }
 
         sessao.Ativo = false;
-        banco.Registrar(User.Identity!.Name!, "Desativou sessao");
+        banco.Registrar(User.Identity!.Name!, "Desativou sessão");
         await banco.SaveChangesAsync();
         return NoContent();
     }

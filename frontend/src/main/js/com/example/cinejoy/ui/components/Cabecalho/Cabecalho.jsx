@@ -35,10 +35,10 @@ export default function Cabecalho({
         </button>
       </div>
 
-      <nav className="nav-shell" aria-label="Navegacao principal">
+      <nav className="nav-shell" aria-label="Navegação principal">
         <button type="button" onClick={abrirAlimentacao}>
           <Utensils size={16} />
-          Alimentacao
+          Alimentação
         </button>
         <button type="button" onClick={abrirIngresso}>
           <Ticket size={16} />
@@ -75,7 +75,7 @@ export default function Cabecalho({
         </form>
         <button type="button" onClick={abrirProgramacao}>
           <CalendarDays size={16} />
-          Programacao
+          Programação
         </button>
       </nav>
     </header>

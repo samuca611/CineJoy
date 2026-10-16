@@ -324,3 +324,105 @@
   font-size: 24px;
   font-weight: 700;
 }
+
+.func-cadastros {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.func-form-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  grid-column: 1 / -1;
+}
+
+.func-form-acoes button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1 1 210px;
+  min-height: 54px;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 18px;
+}
+
+.func-form-acoes .func-secundario {
+  background: var(--vermelho);
+  color: white;
+}
+
+.func-cadastros button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.func-registros h2 {
+  margin: 0 0 20px;
+  font-size: 22px;
+}
+
+.func-registro {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1px solid #8d2300;
+  padding: 20px 0;
+}
+
+.func-registro-texto {
+  flex: 1 1 220px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.func-registro h3,
+.func-registro p {
+  margin: 0 0 6px;
+}
+
+.func-registro h3 {
+  font-size: 20px;
+}
+
+.func-registro-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+.func-registro-acoes button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--vermelho);
+  color: white;
+}
+
+.func-confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.func-confirmacao p {
+  flex-basis: 100%;
+}
+
+.func-confirmacao button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: var(--vermelho);
+  color: white;
+}

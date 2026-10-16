@@ -86,6 +86,6 @@ export default function TelaMinhaConta({ estados, aoSalvar, pedirLogin }) {
     </fieldset>
     {erro && <p role="alert">{erro}</p>}
     {mensagem && <p role="status">{mensagem}</p>}
-    <button type="submit" disabled={salvando}><Save size={19} /> {salvando ? "Salvando..." : "Salvar alteracoes"}</button>
+    <button type="submit" disabled={salvando}><Save size={19} /> {salvando ? "Salvando..." : "Salvar alterações"}</button>
   </form>;
 }

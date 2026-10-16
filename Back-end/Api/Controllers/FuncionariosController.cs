@@ -27,7 +27,7 @@ public class FuncionariosController : ControllerBase
     public async Task<IActionResult> Adicionar(Cadastro dados)
     {
         Usuario usuario = await Contas.Cadastrar(banco, dados, "Funcionario");
-        banco.Registrar(User.Identity!.Name!, $"Cadastrou funcionario: {usuario.Nome}");
+        banco.Registrar(User.Identity!.Name!, $"Cadastrou funcionário: {usuario.Nome}");
         await banco.SaveChangesAsync();
         return Ok(Contas.Resumo(usuario));
     }
@@ -38,7 +38,7 @@ public class FuncionariosController : ControllerBase
         {
             return BadRequest(new
             {
-                mensagem = "Nao e possivel desativar sua propria conta."
+                mensagem = "Não é possível desativar sua própria conta."
             });
         }
 
@@ -49,7 +49,7 @@ public class FuncionariosController : ControllerBase
         }
 
         usuario.Ativo = false;
-        banco.Registrar(User.Identity!.Name!, $"Desativou funcionario: {usuario.Nome}");
+        banco.Registrar(User.Identity!.Name!, $"Desativou funcionário: {usuario.Nome}");
         await banco.SaveChangesAsync();
         return NoContent();
     }

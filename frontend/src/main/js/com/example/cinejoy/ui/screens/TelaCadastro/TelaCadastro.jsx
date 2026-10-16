@@ -121,12 +121,12 @@ export default function TelaCadastro({
       formulario.userLogin === "" ||
       formulario.senha === ""
     ) {
-      setMensagem("Preencha todos os campos obrigatorios.");
+      setMensagem("Preencha todos os campos obrigatórios.");
       return;
     }
 
     if (cpf.length !== 11) {
-      setMensagem("CPF precisa ter 11 numeros.");
+      setMensagem("CPF precisa ter 11 números.");
       return;
     }
 
@@ -167,11 +167,11 @@ export default function TelaCadastro({
       />
 
       <main className="area-usuario">
-        <section className="food-banner" aria-label="Espaco para poster"></section>
+        <section className="food-banner" aria-label="Espaço para pôster"></section>
         <section className="conta-conteudo">
         <div className="conta-titulo">
           {/* botão interativo que aciona a função de voltar para a página inicial */}
-          <button className="conta-voltar" type="button" onClick={voltarInicio} title="Voltar para inicio" aria-label="Voltar para inicio">
+          <button className="conta-voltar" type="button" onClick={voltarInicio} title="Voltar para início" aria-label="Voltar para início">
             <ArrowLeft size={22} />
           </button>
           <h1>Crie sua conta</h1>
@@ -185,7 +185,7 @@ export default function TelaCadastro({
               <input
                 value={formulario.cpf}
                 onChange={(evento) => mudarCampo("cpf", evento.target.value)}
-                placeholder="11 numeros"
+                placeholder="11 números"
                 maxLength="14"
                 inputMode="numeric"
                 required
@@ -236,7 +236,7 @@ export default function TelaCadastro({
                 type="tel"
                 value={formulario.telefone}
                 onChange={(evento) => mudarCampo("telefone", evento.target.value)}
-                placeholder="DDD e numero"
+                placeholder="DDD e número"
                 maxLength="11"
                 autoComplete="tel-national"
               />

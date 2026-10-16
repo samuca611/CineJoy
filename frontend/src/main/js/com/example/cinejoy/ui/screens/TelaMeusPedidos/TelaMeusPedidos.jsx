@@ -26,7 +26,7 @@ export default function TelaMeusPedidos({ pedirLogin, voltarInicio }) {
 
   useEffect(() => { carregar(); }, []);
 
-  return <section className="meus-pedidos" aria-label="Historico de compras" aria-busy={carregando}>
+  return <section className="meus-pedidos" aria-label="Histórico de compras" aria-busy={carregando}>
     <div className="pedidos-ferramentas">
       <span>{carregando ? "Carregando pedidos..." : pedidos.length + (pedidos.length === 1 ? " pedido" : " pedidos")}</span>
       <button type="button" onClick={carregar} disabled={carregando} title="Atualizar pedidos" aria-label="Atualizar pedidos"><RefreshCw size={20} /></button>
@@ -53,7 +53,7 @@ export default function TelaMeusPedidos({ pedirLogin, voltarInicio }) {
       {pedido.alimentos.length > 0 && <section className="pedido-alimentos"><h3>Alimentos</h3>
         <ul>{pedido.alimentos.map((item) => <li key={item.produtoId}><span>{item.quantidade} × {item.nome}</span><strong>{dinheiro(item.quantidade * item.preco)}</strong></li>)}</ul>
       </section>}
-      <footer className="pedido-total"><span>{pedido.formaPagamento}</span><strong>Total {dinheiro(pedido.total)}</strong></footer>
+      <footer className="pedido-total"><span>{pedido.formaPagamento === "Cartao" ? "Cartão" : pedido.formaPagamento}</span><strong>Total {dinheiro(pedido.total)}</strong></footer>
     </article>)}
   </section>;
 }

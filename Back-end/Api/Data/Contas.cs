@@ -14,12 +14,12 @@ public static class Contas
         string login = dados.UserLogin.Trim();
         if (dados.DataNascimento < new DateTime(1900, 1, 1) || dados.DataNascimento > DateTime.Today)
         {
-            throw new ArgumentException("Data de nascimento invalida.");
+            throw new ArgumentException("Data de nascimento inválida.");
         }
 
         if (await banco.Usuarios.AnyAsync(x => x.Email == email || x.Cpf == dados.Cpf || x.UserLogin == login))
         {
-            throw new ArgumentException("Email, CPF ou login ja cadastrado.");
+            throw new ArgumentException("Email, CPF ou login já cadastrado.");
         }
 
         Usuario usuario = new Usuario

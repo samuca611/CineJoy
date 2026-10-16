@@ -49,7 +49,7 @@ public class UsuariosController : ControllerBase
     {
         if (dados.DataNascimento < new DateTime(1900, 1, 1) || dados.DataNascimento > DateTime.Today)
         {
-            return BadRequest(new { mensagem = "Data de nascimento invalida." });
+            return BadRequest(new { mensagem = "Data de nascimento inválida." });
         }
 
         int id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
