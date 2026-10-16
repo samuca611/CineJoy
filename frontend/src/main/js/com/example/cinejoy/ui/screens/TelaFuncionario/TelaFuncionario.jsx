@@ -1,6 +1,9 @@
 import { LogOut, Search, UserCircle } from "lucide-react";
 import { useState } from "react";
 import Rodape from "../../components/Rodape/Rodape.jsx";
+import TelaSalas from "./TelaSalas.jsx";
+import TelaSessoes from "./TelaSessoes.jsx";
+import TelaLogs from "../TelaLogs/TelaLogs.jsx";
 
 const filmeVazio = {
   titulo: "",
@@ -14,6 +17,8 @@ const filmeVazio = {
   dataSessao: "25/09",
   horarioSessao: "19:00",
   sala: "01",
+  salaId: "",
+  preco: 24,
   formato: "2D"
 };
 
@@ -75,17 +80,17 @@ function CabecalhoFuncionario({ pagina, trocarPagina, sair }) {
   );
 }
 
-function LateralFuncionario({ titulo, imagem, children }) {
+function LateralFuncionario({ titulo, imagem, children, funcionario }) {
   return (
     <aside className="func-side">
       <h2>AREA DO FUNCIONARIO</h2>
       <label>
         Nome:
-        <input value="Funcionario 1" readOnly />
+        <input value={funcionario?.nome || ""} readOnly />
       </label>
       <label>
         id:
-        <input value="001" readOnly />
+        <input value={funcionario?.id || ""} readOnly />
       </label>
 
       <div className="func-poster-card">
@@ -134,13 +139,15 @@ function formularioDoFilme(filme) {
     dataSessao: sessao.data || "25/09",
     horarioSessao: sessao.horario || "19:00",
     sala: sessao.sala || "01",
+    salaId: sessao.salaId || "",
+    preco: sessao.preco ?? 24,
     formato: sessao.formato || "2D"
   };
 }
 
 function dadosDoFilme(formulario, idAtual) {
   return {
-    id: idAtual || Date.now(),
+    id: idAtual || 0,
     titulo: formulario.titulo,
     genero: formulario.genero,
     classificacao: formulario.classificacao,
@@ -151,17 +158,20 @@ function dadosDoFilme(formulario, idAtual) {
     posterCatalogo: formulario.posterCatalogo || formulario.imagem || "/assets/filme.jpg",
     sessoes: [
       {
-        id: Date.now() + 1,
+        id: formulario.sessoes?.[0]?.id || 0,
         data: formulario.dataSessao,
         horario: formulario.horarioSessao,
         sala: formulario.sala,
+        salaId: Number(formulario.salaId),
+        preco: Number(formulario.preco),
         formato: formulario.formato
-      }
+      },
+      ...(formulario.sessoes || []).slice(1)
     ]
   };
 }
 
-function TelaCinema({ filmes, mudarFilmes, registrarLog }) {
+function TelaCinema({ filmes, gravarFilme, removerFilme, salas, unidades, funcionario }) {
   const [operacao, setOperacao] = useState("Incluir");
   const [filmeSelecionado, setFilmeSelecionado] = useState(filmes[0]?.id || "");
   const filmeAtual = filmes.find((filme) => filme.id === Number(filmeSelecionado));
@@ -189,38 +199,34 @@ function TelaCinema({ filmes, mudarFilmes, registrarLog }) {
     setFilmeSelecionado(filmeAtual?.id || filmes[0]?.id || "");
   }
 
-  function salvarFilme(evento) {
+  async function salvarFilme(evento) {
     evento.preventDefault();
+    const incluir = operacao === "Incluir";
+    const filme = dadosDoFilme(formulario, Number(filmeSelecionado));
+    const salvo = await gravarFilme(filme, incluir);
 
-    if (operacao === "Incluir") {
-      const novoFilme = dadosDoFilme(formulario);
-      mudarFilmes([...filmes, novoFilme]);
-      registrarLog(`Adicionou filme: ${novoFilme.titulo}`);
-      setFilmeSelecionado(novoFilme.id);
-      setFormulario(formularioDoFilme(novoFilme));
+    if (salvo) {
+      setFilmeSelecionado(salvo.id);
+      setFormulario(formularioDoFilme(salvo));
       setOperacao("Editar");
-      return;
     }
-
-    const filmeEditado = dadosDoFilme(formulario, Number(filmeSelecionado));
-    mudarFilmes(filmes.map((filme) => (filme.id === Number(filmeSelecionado) ? filmeEditado : filme)));
-    registrarLog(`Editou filme: ${filmeEditado.titulo}`);
   }
 
-  function excluirFilme() {
-    const novaLista = filmes.filter((filme) => filme.id !== Number(filmeSelecionado));
-    registrarLog(`Excluiu filme: ${filmeAtual?.titulo || filmeSelecionado}`);
-    mudarFilmes(novaLista);
-    setFilmeSelecionado(novaLista[0]?.id || "");
-    setFormulario(formularioDoFilme(novaLista[0]));
-    setOperacao(novaLista.length === 0 ? "Incluir" : "Editar");
+  async function excluirFilme() {
+    const excluido = await removerFilme(Number(filmeSelecionado));
+    if (!excluido) return;
+
+    const restantes = filmes.filter((filme) => filme.id !== Number(filmeSelecionado));
+    setFilmeSelecionado(restantes[0]?.id || "");
+    setFormulario(formularioDoFilme(restantes[0]));
+    setOperacao(restantes.length === 0 ? "Incluir" : "Editar");
   }
 
   const semCadastro = filmes.length === 0 && operacao !== "Incluir";
 
   return (
     <main className="func-main">
-      <LateralFuncionario titulo={formulario.titulo || "Filme"} imagem={formulario.imagem || "/assets/filme.jpg"} />
+      <LateralFuncionario funcionario={funcionario} titulo={formulario.titulo || "Filme"} imagem={formulario.imagem || "/assets/filme.jpg"} />
 
       <section className="func-panel">
         <h1>Cadastro, edicao e exclusao de filmes</h1>
@@ -256,7 +262,11 @@ function TelaCinema({ filmes, mudarFilmes, registrarLog }) {
                 <label>Elenco<input value={formulario.elenco} onChange={(evento) => mudarCampo("elenco", evento.target.value)} /></label>
                 <label>Data da sessao<input value={formulario.dataSessao} onChange={(evento) => mudarCampo("dataSessao", evento.target.value)} /></label>
                 <label>Horario<input value={formulario.horarioSessao} onChange={(evento) => mudarCampo("horarioSessao", evento.target.value)} /></label>
-                <label>Sala<input value={formulario.sala} onChange={(evento) => mudarCampo("sala", evento.target.value)} /></label>
+                <label>Sala<select required value={formulario.salaId} onChange={(evento) => mudarCampo("salaId", evento.target.value)}>
+                  <option value="">Selecione</option>
+                  {salas.map((sala) => <option key={sala.id} value={sala.id}>{unidades.find((u) => u.id === sala.unidadeId)?.nome} - Sala {sala.numero}</option>)}
+                </select></label>
+                <label>Preco do ingresso<input type="number" min="0.01" step="0.01" value={formulario.preco} onChange={(evento) => mudarCampo("preco", evento.target.value)} required /></label>
                 <label>Formato<input value={formulario.formato} onChange={(evento) => mudarCampo("formato", evento.target.value)} /></label>
                 <label className="wide">Imagem principal<input value={formulario.imagem} onChange={(evento) => mudarCampo("imagem", evento.target.value)} /></label>
                 <label className="wide">Poster do catalogo<input value={formulario.posterCatalogo} onChange={(evento) => mudarCampo("posterCatalogo", evento.target.value)} /></label>
@@ -270,7 +280,7 @@ function TelaCinema({ filmes, mudarFilmes, registrarLog }) {
   );
 }
 
-function TelaAlimentacaoFuncionario({ produtos, mudarProdutos, registrarLog }) {
+function TelaAlimentacaoFuncionario({ produtos, gravarProduto, removerProduto, funcionario }) {
   const [operacao, setOperacao] = useState("Incluir");
   const [idSelecionado, setIdSelecionado] = useState(produtos[0]?.id || "");
   const produtoAtual = produtos.find((produto) => produto.id === Number(idSelecionado));
@@ -294,43 +304,39 @@ function TelaAlimentacaoFuncionario({ produtos, mudarProdutos, registrarLog }) {
     setIdSelecionado(produtoAtual?.id || produtos[0]?.id || "");
   }
 
-  function salvarProduto(evento) {
+  async function salvarProduto(evento) {
     evento.preventDefault();
-    const produtoSalvo = {
+    const incluir = operacao === "Incluir";
+    const produto = {
       ...formulario,
-      id: operacao === "Incluir" ? Date.now() : Number(idSelecionado),
-      preco: Number(String(formulario.preco).replace(",", ".")) || 0,
-      estoque: Number(formulario.estoque) || 0,
-      imagem: formulario.imagem || "/assets/pipoca.jpg"
+      id: Number(idSelecionado) || 0,
+      preco: Number(String(formulario.preco).replace(",", ".")),
+      estoque: Number(formulario.estoque)
     };
 
-    if (operacao === "Incluir") {
-      mudarProdutos([...produtos, produtoSalvo]);
-      registrarLog(`Adicionou alimento: ${produtoSalvo.nome}`);
-      setIdSelecionado(produtoSalvo.id);
+    const salvo = await gravarProduto(produto, incluir);
+    if (salvo) {
+      setIdSelecionado(salvo.id);
+      setFormulario(salvo);
       setOperacao("Editar");
-    } else {
-      mudarProdutos(produtos.map((produto) => (produto.id === Number(idSelecionado) ? produtoSalvo : produto)));
-      registrarLog(`Editou alimento: ${produtoSalvo.nome}`);
     }
-
-    setFormulario(produtoSalvo);
   }
 
-  function excluirProduto() {
-    const novaLista = produtos.filter((produto) => produto.id !== Number(idSelecionado));
-    registrarLog(`Excluiu alimento: ${produtoAtual?.nome || idSelecionado}`);
-    mudarProdutos(novaLista);
-    setIdSelecionado(novaLista[0]?.id || "");
-    setFormulario(novaLista[0] || alimentoVazio);
-    setOperacao(novaLista.length === 0 ? "Incluir" : "Editar");
+  async function excluirProduto() {
+    const excluido = await removerProduto(Number(idSelecionado));
+    if (!excluido) return;
+
+    const restantes = produtos.filter((produto) => produto.id !== Number(idSelecionado));
+    setIdSelecionado(restantes[0]?.id || "");
+    setFormulario(restantes[0] || alimentoVazio);
+    setOperacao(restantes.length === 0 ? "Incluir" : "Editar");
   }
 
   const semCadastro = produtos.length === 0 && operacao !== "Incluir";
 
   return (
     <main className="func-main">
-      <LateralFuncionario titulo={formulario.nome || "Alimento"} imagem={formulario.imagem || "/assets/pipoca.jpg"} />
+      <LateralFuncionario funcionario={funcionario} titulo={formulario.nome || "Alimento"} imagem={formulario.imagem || "/assets/pipoca.jpg"} />
       <section className="func-panel">
         <h1>Cadastro, edicao e exclusao de alimentos</h1>
         <BotoesOperacao operacao={operacao} trocarOperacao={trocarOperacao} />
@@ -368,18 +374,19 @@ function TelaAlimentacaoFuncionario({ produtos, mudarProdutos, registrarLog }) {
   );
 }
 
-function TelaIngressos({ ingressos, mudarIngressos, registrarLog }) {
+function TelaIngressos({ ingressos, alterarStatus, funcionario }) {
   const [idSelecionado, setIdSelecionado] = useState(ingressos[0]?.id || "");
   const ingresso = ingressos.find((item) => item.id === Number(idSelecionado)) || ingressos[0];
 
   function trocarStatus(status) {
-    mudarIngressos(ingressos.map((item) => (item.id === Number(idSelecionado) ? { ...item, status } : item)));
-    registrarLog(`Atualizou ingresso #${idSelecionado} para ${status}`);
+    if (ingresso) {
+      alterarStatus(ingresso.pedidoId, status);
+    }
   }
 
   return (
     <main className="func-main">
-      <LateralFuncionario titulo="Dados do ingresso" imagem="/assets/ingresso.png" />
+      <LateralFuncionario funcionario={funcionario} titulo="Dados do ingresso" imagem="/assets/ingresso.png" />
       <section className="func-panel">
         <h1>Visualizacao do ingresso do usuario</h1>
 
@@ -401,7 +408,7 @@ function TelaIngressos({ ingressos, mudarIngressos, registrarLog }) {
             </div>
             <div className="payment-box">
               <p>Situacao do pagamento</p>
-              <button type="button" onClick={() => trocarStatus("Realizado")}>Realizado</button>
+              <button type="button" onClick={() => trocarStatus("Simulado")}>Simulado</button>
               <button type="button" onClick={() => trocarStatus("Pendente")}>Pendente</button>
               <strong>{ingresso.status}</strong>
             </div>
@@ -412,7 +419,7 @@ function TelaIngressos({ ingressos, mudarIngressos, registrarLog }) {
   );
 }
 
-function TelaUnidades({ unidades, mudarUnidades, registrarLog }) {
+function TelaUnidades({ unidades, gravarUnidade, removerUnidade, funcionario }) {
   const [operacao, setOperacao] = useState("Incluir");
   const [idSelecionado, setIdSelecionado] = useState(unidades[0]?.id || "");
   const unidadeAtual = unidades.find((unidade) => unidade.id === Number(idSelecionado));
@@ -436,40 +443,34 @@ function TelaUnidades({ unidades, mudarUnidades, registrarLog }) {
     setIdSelecionado(unidadeAtual?.id || unidades[0]?.id || "");
   }
 
-  function salvarUnidade(evento) {
+  async function salvarUnidade(evento) {
     evento.preventDefault();
-    const unidadeSalva = {
-      ...formulario,
-      id: operacao === "Incluir" ? Date.now() : Number(idSelecionado)
-    };
+    const incluir = operacao === "Incluir";
+    const unidade = { ...formulario, id: Number(idSelecionado) || 0 };
+    const salva = await gravarUnidade(unidade, incluir);
 
-    if (operacao === "Incluir") {
-      mudarUnidades([...unidades, unidadeSalva]);
-      registrarLog(`Adicionou unidade: ${unidadeSalva.nome}`);
-      setIdSelecionado(unidadeSalva.id);
+    if (salva) {
+      setIdSelecionado(salva.id);
+      setFormulario(salva);
       setOperacao("Editar");
-    } else {
-      mudarUnidades(unidades.map((unidade) => (unidade.id === Number(idSelecionado) ? unidadeSalva : unidade)));
-      registrarLog(`Editou unidade: ${unidadeSalva.nome}`);
     }
-
-    setFormulario(unidadeSalva);
   }
 
-  function excluirUnidade() {
-    const novaLista = unidades.filter((unidade) => unidade.id !== Number(idSelecionado));
-    registrarLog(`Excluiu unidade: ${unidadeAtual?.nome || idSelecionado}`);
-    mudarUnidades(novaLista);
-    setIdSelecionado(novaLista[0]?.id || "");
-    setFormulario(novaLista[0] || unidadeVazia);
-    setOperacao(novaLista.length === 0 ? "Incluir" : "Editar");
+  async function excluirUnidade() {
+    const excluida = await removerUnidade(Number(idSelecionado));
+    if (!excluida) return;
+
+    const restantes = unidades.filter((unidade) => unidade.id !== Number(idSelecionado));
+    setIdSelecionado(restantes[0]?.id || "");
+    setFormulario(restantes[0] || unidadeVazia);
+    setOperacao(restantes.length === 0 ? "Incluir" : "Editar");
   }
 
   const semCadastro = unidades.length === 0 && operacao !== "Incluir";
 
   return (
     <main className="func-main">
-      <LateralFuncionario titulo="Imagem da unidade" imagem="/assets/logo-cinejoy-footer.png" />
+      <LateralFuncionario funcionario={funcionario} titulo="Imagem da unidade" imagem="/assets/logo-cinejoy-footer.png" />
       <section className="func-panel">
         <h1>Unidades CineJoy</h1>
         <BotoesOperacao operacao={operacao} trocarOperacao={trocarOperacao} />
@@ -506,37 +507,6 @@ function TelaUnidades({ unidades, mudarUnidades, registrarLog }) {
   );
 }
 
-function TelaLogs({ logs }) {
-  return (
-    <main className="func-main single">
-      <section className="func-panel">
-        <h1>Logs dos CineJoyfuls</h1>
-        <div className="logs-table">
-          <strong>Funcionario</strong>
-          <strong>Tarefa</strong>
-          <strong>Status</strong>
-          <strong>Data/Hora</strong>
-          {logs.length === 0 ? (
-            <div className="logs-row">
-              <span>Nenhum log registrado.</span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          ) : logs.map((log) => (
-            <div className="logs-row" key={log.id}>
-              <span>{log.funcionario}</span>
-              <span>{log.tarefa}</span>
-              <span>{log.status}</span>
-              <span>{log.data}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
-}
-
 function TelaHomeFuncionario({ trocarPagina }) {
   return (
     <main className="func-main single">
@@ -549,6 +519,8 @@ function TelaHomeFuncionario({ trocarPagina }) {
           <button type="button" onClick={() => trocarPagina("ingressos")}>Ingressos</button>
           <button type="button" onClick={() => trocarPagina("unidades")}>Unidades</button>
           <button type="button" onClick={() => trocarPagina("logs")}>Logs</button>
+          <button type="button" onClick={() => trocarPagina("salas")}>Salas</button>
+          <button type="button" onClick={() => trocarPagina("sessoes")}>Sessoes</button>
         </div>
       </section>
     </main>
@@ -559,12 +531,17 @@ export default function TelaFuncionario({
   filmes,
   ingressos,
   logs,
-  mudarFilmes,
-  mudarIngressos,
-  mudarProdutos,
-  mudarUnidades,
+  gravarFilme,
+  removerFilme,
+  gravarProduto,
+  removerProduto,
+  gravarUnidade,
+  removerUnidade,
+  alterarStatus,
   produtos,
-  registrarLog,
+  salas,
+  atualizarDados,
+  usuario,
   sair,
   unidades
 }) {
@@ -574,10 +551,12 @@ export default function TelaFuncionario({
     <>
       <CabecalhoFuncionario pagina={pagina} trocarPagina={setPagina} sair={sair} />
       {pagina === "home" && <TelaHomeFuncionario trocarPagina={setPagina} />}
-      {pagina === "cinema" && <TelaCinema filmes={filmes} mudarFilmes={mudarFilmes} registrarLog={registrarLog} />}
-      {pagina === "alimentacao" && <TelaAlimentacaoFuncionario produtos={produtos} mudarProdutos={mudarProdutos} registrarLog={registrarLog} />}
-      {pagina === "ingressos" && <TelaIngressos ingressos={ingressos} mudarIngressos={mudarIngressos} registrarLog={registrarLog} />}
-      {pagina === "unidades" && <TelaUnidades unidades={unidades} mudarUnidades={mudarUnidades} registrarLog={registrarLog} />}
+      {pagina === "cinema" && <TelaCinema funcionario={usuario} filmes={filmes} gravarFilme={gravarFilme} removerFilme={removerFilme} salas={salas} unidades={unidades} />}
+      {pagina === "alimentacao" && <TelaAlimentacaoFuncionario funcionario={usuario} produtos={produtos} gravarProduto={gravarProduto} removerProduto={removerProduto} />}
+      {pagina === "ingressos" && <TelaIngressos funcionario={usuario} ingressos={ingressos} alterarStatus={alterarStatus} />}
+      {pagina === "unidades" && <TelaUnidades funcionario={usuario} unidades={unidades} gravarUnidade={gravarUnidade} removerUnidade={removerUnidade} />}
+      {pagina === "salas" && <TelaSalas salas={salas} unidades={unidades} atualizarDados={atualizarDados} />}
+      {pagina === "sessoes" && <TelaSessoes filmes={filmes} salas={salas} unidades={unidades} atualizarDados={atualizarDados} />}
       {pagina === "logs" && <TelaLogs logs={logs} />}
       <Rodape />
     </>

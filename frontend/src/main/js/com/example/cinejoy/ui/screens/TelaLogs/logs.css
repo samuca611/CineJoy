@@ -1,0 +1,142 @@
+.logs-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logs-heading h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+}
+
+.logs-heading > span {
+  flex-shrink: 0;
+  color: var(--vermelho-escuro);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.logs-lista {
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--vermelho-escuro);
+}
+
+.logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+  font-size: 15px;
+}
+
+.logs-table th,
+.logs-table td {
+  padding: 16px 20px;
+  vertical-align: middle;
+  overflow-wrap: anywhere;
+}
+
+.logs-table th {
+  border-bottom: 2px solid var(--laranja);
+  color: var(--laranja-claro);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.logs-table th:nth-child(1) { width: 21%; }
+.logs-table th:nth-child(2) { width: 39%; }
+.logs-table th:nth-child(3) { width: 19%; }
+.logs-table th:nth-child(4) { width: 21%; }
+
+.logs-table td {
+  border-bottom: 1px solid #b75430;
+}
+
+.logs-table tbody tr:nth-child(even) {
+  background: var(--vermelho);
+}
+
+.logs-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.logs-table time,
+.logs-table th small {
+  display: grid;
+  gap: 4px;
+}
+
+.logs-table small {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.log-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.log-status svg {
+  flex-shrink: 0;
+  color: var(--laranja-claro);
+}
+
+.logs-empty {
+  margin: 0;
+  padding: 24px;
+  border-radius: 8px;
+  background: var(--vermelho-escuro);
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .logs-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .logs-heading h1 {
+    font-size: 22px;
+  }
+
+  .logs-heading h1 svg {
+    flex-shrink: 0;
+  }
+
+  .logs-table,
+  .logs-table tbody,
+  .logs-table tr {
+    display: block;
+  }
+
+  .logs-table thead {
+    display: none;
+  }
+
+  .logs-table tbody tr {
+    padding: 14px 16px;
+    border-bottom: 1px solid #b75430;
+  }
+
+  .logs-table td {
+    display: grid;
+    grid-template-columns: 90px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    border: 0;
+    padding: 8px 0;
+  }
+
+  .logs-table td::before {
+    content: attr(data-label);
+    color: var(--laranja-claro);
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
