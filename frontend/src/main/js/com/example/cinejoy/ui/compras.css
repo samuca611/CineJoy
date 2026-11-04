@@ -1,15 +1,15 @@
-.food-page,
-.cadastro-page,
-.ticket-page,
-.payment-page {
+.pagina-alimentos,
+.pagina-cadastro,
+.pagina-ingresso,
+.pagina-pagamento {
   min-height: 900px;
   color: white;
 }
 
-.food-toolbar,
-.cadastro-toolbar,
-.ticket-toolbar,
-.payment-toolbar {
+.topo-alimentos,
+.topo-cadastro,
+.topo-ingresso,
+.topo-pagamento {
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -19,11 +19,11 @@
   padding: 34px 16px 0;
 }
 
-.food-toolbar button,
-.cadastro-toolbar button,
-.ticket-toolbar button,
-.payment-toolbar button,
-.secondary-action {
+.topo-alimentos button,
+.topo-cadastro button,
+.topo-ingresso button,
+.topo-pagamento button,
+.acao-secundaria {
   border: 0;
   border-radius: 20px;
   padding: 16px 22px;
@@ -32,36 +32,36 @@
   font-weight: 600;
 }
 
-.food-toolbar p,
-.food-toolbar h1,
-.cadastro-toolbar p,
-.cadastro-toolbar h1,
-.ticket-toolbar p,
-.ticket-toolbar h1,
-.payment-toolbar p,
-.payment-toolbar h1 {
+.topo-alimentos p,
+.topo-alimentos h1,
+.topo-cadastro p,
+.topo-cadastro h1,
+.topo-ingresso p,
+.topo-ingresso h1,
+.topo-pagamento p,
+.topo-pagamento h1 {
   margin: 0;
   text-align: right;
 }
 
-.food-toolbar p,
-.cadastro-toolbar p,
-.payment-toolbar p {
+.topo-alimentos p,
+.topo-cadastro p,
+.topo-pagamento p {
   font-size: 20px;
 }
 
-.food-toolbar h1,
-.cadastro-toolbar h1,
-.ticket-toolbar h1,
-.payment-toolbar h1 {
+.topo-alimentos h1,
+.topo-cadastro h1,
+.topo-ingresso h1,
+.topo-pagamento h1 {
   font-family: "Manrope", Arial, sans-serif;
   font-size: 64px;
 }
 
-.food-layout,
-.cadastro-area,
-.ticket-layout,
-.payment-layout {
+.area-alimentos,
+.area-cadastro,
+.area-ingresso,
+.area-pagamento {
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 34px;
@@ -70,7 +70,7 @@
   padding: 36px 16px 70px;
 }
 
-.food-products {
+.lista-alimentos {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;

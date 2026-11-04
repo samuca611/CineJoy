@@ -9,14 +9,14 @@ function AbasDeData({ datas, dataEscolhida, trocarData }) {
   }
 
   return (
-    <div className="date-tabs">
+    <div className="abas-datas">
       <button type="button" aria-label="Data anterior" onClick={() => mudarData(-1)}>
         <ChevronLeft size={16} />
       </button>
 
-      {datas.map((data, index) => (
+      {datas.map((data) => (
         <button
-          className={dataEscolhida === data ? "active" : ""}
+          className={dataEscolhida === data ? "ativo" : ""}
           key={data}
           onClick={() => trocarData(data)}
           type="button"
@@ -35,10 +35,10 @@ function AbasDeData({ datas, dataEscolhida, trocarData }) {
 
 function FilmeDaLista({ filme, selecionarFilme }) {
   return (
-    <article className="movie-item" onClick={() => selecionarFilme(filme)}>
+    <article className="item-filme" onClick={() => selecionarFilme(filme)}>
       <img src={filme.imagem} alt={`Pôster de ${filme.titulo}`} />
 
-      <div className="movie-copy">
+      <div className="dados-filme">
         <h3>{filme.titulo}</h3>
         <p>
           {filme.duracao} {filme.genero}
@@ -82,10 +82,10 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
   const unidade = unidadeEscolhida || unidades[0];
 
   return (
-    <section className="program-band" id="programacao">
-      <div className="content-wrap program-grid">
+    <section className="faixa-programacao" id="programacao">
+      <div className="conteudo-central area-programacao">
         {produto && (
-          <aside className="food-panel" id="alimentacao">
+          <aside className="destaque-alimento" id="alimentacao">
             <img src={produto.imagem || "/assets/pipoca.jpg"} alt={produto.nome} />
             <div>
               <p>Alimentação</p>
@@ -96,9 +96,9 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
         )}
 
         <div className="schedule-panel" id="ingresso">
-          <div className="section-heading compact">
+          <div className="titulo-secao compacto">
             <p>Em cartaz | Em breve</p>
-            <span className="location">
+            <span className="localizacao">
               <MapPin size={15} />
               {unidade ? unidade.nome : "Nenhuma unidade cadastrada"}
             </span>
@@ -110,9 +110,9 @@ export default function Programacao({ filmes, produtos, textoBusca, unidadeEscol
             trocarData={trocarData}
           />
 
-          <div className="movie-list">
+          <div className="lista-filmes">
             {filmesOrdenados.length === 0 ? (
-              <p className="empty-message">
+              <p className="mensagem-vazia">
                 {textoBusca ? "Nenhum filme encontrado na busca." : "Nenhum filme cadastrado para a programação."}
               </p>
             ) : filmesOrdenados.slice(0, 3).map((filme) => (

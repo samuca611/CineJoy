@@ -1,9 +1,9 @@
-.site-header {
+.cabecalho-site {
   min-height: 210px;
   background: var(--vermelho-escuro);
 }
 
-.account-strip {
+.faixa-conta {
   display: flex;
   justify-content: flex-end;
   min-height: 36px;
@@ -11,7 +11,7 @@
   background: var(--vermelho);
 }
 
-.account-strip button {
+.faixa-conta button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -23,11 +23,11 @@
   line-height: 1.3;
 }
 
-.account-strip button svg {
+.faixa-conta button svg {
   flex-shrink: 0;
 }
 
-.nav-shell {
+.menu-principal {
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr 1fr 1fr;
   align-items: end;
@@ -38,9 +38,9 @@
   padding: 0 56px 14px;
 }
 
-.nav-shell a,
-.nav-shell button,
-.search-pill {
+.menu-principal a,
+.menu-principal button,
+.campo-busca {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -53,7 +53,7 @@
   font-weight: 500;
 }
 
-.brand-mark {
+.marca-cinema {
   position: relative;
   display: flex;
   align-items: center;
@@ -62,7 +62,7 @@
   font-style: italic;
 }
 
-.brand-logo-button {
+.botao-logo {
   position: absolute;
   left: 50%;
   bottom: 45px;
@@ -75,13 +75,13 @@
   transform: translateX(-50%);
 }
 
-.brand-logo-button img {
+.botao-logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
-.cinema-field {
+.campo-unidade {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -89,7 +89,7 @@
   font-weight: 600;
 }
 
-.cinema-field select {
+.campo-unidade select {
   max-width: 190px;
   border: 0;
   outline: 0;
@@ -100,17 +100,17 @@
   font-weight: 600;
 }
 
-.cinema-field option {
+.campo-unidade option {
   color: var(--preto);
 }
 
-.search-pill {
+.campo-busca {
   border-radius: 24px;
   padding: 0 18px 0 14px;
   background: var(--vermelho);
 }
 
-.search-pill button {
+.campo-busca button {
   min-height: auto;
   padding: 0;
   border: 0;
@@ -118,7 +118,7 @@
   color: var(--branco);
 }
 
-.search-pill input {
+.campo-busca input {
   width: 100%;
   border: 0;
   outline: 0;
@@ -126,6 +126,6 @@
   color: var(--branco);
 }
 
-.search-pill input::placeholder {
+.campo-busca input::placeholder {
   color: var(--branco);
 }

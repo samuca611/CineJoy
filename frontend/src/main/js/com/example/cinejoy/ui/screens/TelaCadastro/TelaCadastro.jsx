@@ -167,7 +167,7 @@ export default function TelaCadastro({
       />
 
       <main className="area-usuario">
-        <section className="food-banner" aria-label="Espaço para pôster"></section>
+        <section className="poster-alimentos" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
         <section className="conta-conteudo">
         <div className="conta-titulo">
           {/* botão interativo que aciona a função de voltar para a página inicial */}

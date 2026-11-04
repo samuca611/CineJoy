@@ -7,18 +7,14 @@ export { adicionarProduto, editarProduto, excluirProduto } from "./produtos.js";
 export { adicionarUnidade, editarUnidade, excluirUnidade, buscarSalas, salvarSala, excluirSala } from "./unidades.js";
 export { comprarIngresso, atualizarStatusPedido } from "./pedidos.js";
 
-export async function buscarDadosDaHome() {
+export async function buscarDadosIniciais() {
   const dados = await requisicao("/site/home");
   const usuario = await buscarSessao();
   let ingressos = [];
-  let logs = [];
 
   if (usuario) {
     ingressos = await requisicao("/ingressos");
-    if (usuario.papel === "Funcionario") {
-      logs = await requisicao("/logs");
-    }
   }
 
-  return { ...dados, usuario, ingressos, logs };
+  return { ...dados, usuario, ingressos };
 }

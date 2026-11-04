@@ -6,11 +6,12 @@ using System.Threading.RateLimiting;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets(System.Reflection.Assembly.GetExecutingAssembly(), optional: true);
+builder.Configuration.AddJsonFile("appsettings.Local.json", optional: true);
 builder.Configuration.AddEnvironmentVariables();
 string? conexao = builder.Configuration["CONNECTION_STRING"];
 if (string.IsNullOrWhiteSpace(conexao))
 {
-    throw new InvalidOperationException("Configure CONNECTION_STRING nos segredos locais do .NET.");
+    throw new InvalidOperationException("Configure CONNECTION_STRING em appsettings.Local.json ou nos segredos locais do .NET.");
 }
 
 builder.WebHost.UseUrls($"http://localhost:{builder.Configuration["PORTA"] ?? "8080"}");

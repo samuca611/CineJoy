@@ -1,43 +1,23 @@
-.hero,
-.cadastro-banner,
-.food-banner,
-.ticket-banner,
-.payment-banner {
-  border-top: 41px solid var(--cinza-claro);
-  background: var(--cinza);
+.poster-principal,
+.poster-cadastro,
+.poster-alimentos,
+.poster-ingresso,
+.poster-pagamento {
+  width: 100%;
+  aspect-ratio: 2170 / 725;
+  background: url("/assets/poster-cinejoy.png") center / contain no-repeat;
 }
 
-.hero {
-  min-height: 549px;
-}
-
-.poster-placeholder {
-  min-height: 508px;
-}
-
-.food-banner {
-  min-height: 390px;
-}
-
-.cadastro-banner {
-  min-height: 330px;
-}
-
-.ticket-banner,
-.payment-banner {
-  min-height: 330px;
-}
-
-.orange-band,
-.program-band,
-.cadastro-page,
-.food-page,
-.ticket-page,
-.payment-page {
+.faixa-catalogo,
+.faixa-programacao,
+.pagina-cadastro,
+.pagina-alimentos,
+.pagina-ingresso,
+.pagina-pagamento {
   background: var(--laranja-claro);
 }
 
-.orange-band,
-.program-band {
+.faixa-catalogo,
+.faixa-programacao {
   color: var(--preto);
 }

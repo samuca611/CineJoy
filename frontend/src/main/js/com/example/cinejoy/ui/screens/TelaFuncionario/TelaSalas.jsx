@@ -1,14 +1,16 @@
-import { Pencil, Plus, Save, Trash2, X } from "lucide-react";
+import { CalendarDays, Pencil, Plus, Save, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { salvarSala, excluirSala } from "../../../data/api/unidades.js";
+import TelaSessoes from "./TelaSessoes.jsx";
 
-export default function TelaSalas({ salas, unidades, atualizarDados }) {
+export default function TelaSalas({ filmes, salas, unidades, atualizarDados, salaAberta, setSalaAberta }) {
   const vazio = { id: 0, unidadeId: "", numero: "" };
   const [formulario, setFormulario] = useState(vazio);
   const [erro, setErro] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [salvando, setSalvando] = useState(false);
   const [excluindo, setExcluindo] = useState(0);
+  const salaSelecionada = salas.find((sala) => sala.id === salaAberta);
 
   function limpar() {
     setFormulario(vazio);
@@ -53,12 +55,22 @@ export default function TelaSalas({ salas, unidades, atualizarDados }) {
     }
   }
 
+  if (salaSelecionada) {
+    return <TelaSessoes
+      filmes={filmes}
+      sala={salaSelecionada}
+      unidade={unidades.find((unidade) => unidade.id === salaSelecionada.unidadeId)}
+      atualizarDados={atualizarDados}
+      voltar={() => setSalaAberta(0)}
+    />;
+  }
+
   return (
-    <main className="func-main single">
-      <section className="func-panel func-cadastros">
+    <main className="func-conteudo coluna-unica">
+      <section className="func-painel func-cadastros">
         <h1>Salas das unidades</h1>
         {unidades.length === 0 && <p role="status">Cadastre uma unidade antes de adicionar salas.</p>}
-        <form className="func-form" onSubmit={salvar}>
+        <form className="func-formulario" onSubmit={salvar}>
           <label>Unidade
             <select required disabled={salvando} value={formulario.unidadeId}
               onChange={(evento) => setFormulario({ ...formulario, unidadeId: evento.target.value })}>
@@ -70,7 +82,7 @@ export default function TelaSalas({ salas, unidades, atualizarDados }) {
             <input required maxLength={10} pattern=".*\S.*" disabled={salvando} value={formulario.numero}
               onChange={(evento) => setFormulario({ ...formulario, numero: evento.target.value })} />
           </label>
-          <div className="func-form-acoes">
+          <div className="func-formulario-acoes">
             <button disabled={salvando || unidades.length === 0} type="submit">
               {formulario.id ? <Save size={20} /> : <Plus size={20} />}
               {salvando ? "Salvando..." : formulario.id ? "Salvar alterações" : "Adicionar sala"}
@@ -92,6 +104,10 @@ export default function TelaSalas({ salas, unidades, atualizarDados }) {
                 <p>{unidades.find((unidade) => unidade.id === sala.unidadeId)?.nome || "Unidade indisponível"}</p>
               </div>
               <div className="func-registro-acoes">
+                <button className="func-sessoes" type="button" disabled={salvando}
+                  aria-label={"Ver sessões da sala " + sala.numero} onClick={() => setSalaAberta(sala.id)}>
+                  <CalendarDays size={20} />Sessões
+                </button>
                 <button type="button" disabled={salvando} title="Editar sala" aria-label={"Editar sala " + sala.numero}
                   onClick={() => { limpar(); setFormulario({ id: sala.id, unidadeId: sala.unidadeId, numero: sala.numero }); }}>
                   <Pencil size={20} />

@@ -1,21 +1,21 @@
-.site-footer {
+.rodape-site {
   min-height: 837px;
   padding: 110px 60px 90px;
   background: var(--vermelho-escuro);
   color: white;
 }
 
-.footer-brand img {
+.logo-rodape img {
   width: 730px;
   max-width: 90%;
 }
 
-.site-footer p {
+.rodape-site p {
   margin: 0;
   padding-left: 250px;
 }
 
-.footer-links {
+.links-rodape {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;

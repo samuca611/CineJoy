@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  adicionarFilme, adicionarProduto, adicionarUnidade, buscarDadosDaHome,
+  adicionarFilme, adicionarProduto, adicionarUnidade, buscarDadosIniciais,
   buscarLocalidades, cadastrarUsuario, comprarIngresso, editarFilme,
   editarProduto, editarUnidade, excluirFilme, excluirProduto, excluirUnidade,
   loginUsuario, sairDaConta, buscarSalas, atualizarStatusPedido
@@ -17,7 +17,6 @@ export function useCineJoyViewModel() {
   const [estados, setEstados] = useState([]);
   const [cidades, setCidades] = useState([]);
   const [ingressos, setIngressos] = useState([]);
-  const [logs, setLogs] = useState([]);
   const [erroApi, setErroApi] = useState("");
   const [dataEscolhida, setDataEscolhida] = useState("");
   const [usuario, setUsuario] = useState(null);
@@ -44,13 +43,12 @@ export function useCineJoyViewModel() {
   }, [unidades, unidadeEscolhidaId]);
 
   async function carregarDados() {
-    const dados = await buscarDadosDaHome();
+    const dados = await buscarDadosIniciais();
     setFilmes(dados.filmes);
     setProdutos(dados.produtos);
     setUnidades(dados.unidades);
     setUsuario(dados.usuario);
     setIngressos(dados.ingressos);
-    setLogs(dados.logs);
     setSalas(await buscarSalas());
     setErroApi("");
     return dados;
@@ -98,20 +96,15 @@ export function useCineJoyViewModel() {
   }
 
   async function gravarFilme(filme, incluir) {
-    try {
-      let salvo;
-      if (incluir) {
-        salvo = await adicionarFilme(filme);
-      } else {
-        salvo = await editarFilme(filme);
-      }
-
-      const dados = await carregarDados();
-      return dados.filmes.find((item) => item.id === salvo.id);
-    } catch (erro) {
-      setErroApi(erro.message);
-      return null;
+    let salvo;
+    if (incluir) {
+      salvo = await adicionarFilme(filme);
+    } else {
+      salvo = await editarFilme(filme);
     }
+
+    const dados = await carregarDados();
+    return dados.filmes.find((item) => item.id === salvo.id) || salvo;
   }
 
   async function removerFilme(id) {
@@ -204,7 +197,7 @@ export function useCineJoyViewModel() {
   return {
     ...navegacao,
     dataEscolhida, datas, erroApi, estados, cidades, filmes,
-    ingressos, logs, produtos, salas,
+    ingressos, produtos, salas,
     unidadeEscolhida, unidadeEscolhidaId, unidades, usuarioLogado,
     usuario, cadastrarNovoUsuario, entrar, sair, carregarDados,
     gravarFilme, removerFilme, gravarProduto, removerProduto,

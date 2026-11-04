@@ -1,4 +1,4 @@
-.login-overlay {
+.login-fundo {
   position: fixed;
   inset: 0;
   z-index: 20;
@@ -26,7 +26,7 @@
   margin-bottom: 28px;
 }
 
-.login-form {
+.login-formulario {
   display: grid;
   width: 280px;
   max-width: 100%;
@@ -35,12 +35,12 @@
   background: var(--laranja);
 }
 
-.login-form h2 {
+.login-formulario h2 {
   margin: 0 0 16px;
   font-size: 18px;
 }
 
-.login-form input {
+.login-formulario input {
   width: 100%;
   border: 0;
   border-bottom: 1px solid #ad5f1b;
@@ -51,18 +51,18 @@
   outline: 0;
 }
 
-.login-form input::placeholder {
+.login-formulario input::placeholder {
   color: white;
 }
 
-.login-form a,
+.login-formulario a,
 .login-modal p,
 .login-modal p a {
   color: white;
   font-size: 12px;
 }
 
-.login-button {
+.login-botao {
   width: 100%;
   min-height: 68px;
   margin-top: 26px;
@@ -74,7 +74,7 @@
   font-weight: 600;
 }
 
-.login-error {
+.login-erro {
   margin-top: 10px;
   font-size: 13px;
   font-weight: 600;

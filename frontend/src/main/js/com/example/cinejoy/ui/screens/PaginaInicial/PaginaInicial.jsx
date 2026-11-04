@@ -65,7 +65,7 @@ export default function PaginaInicial() {
   function mostrarTela() {
     if (cineJoy.tela === "funcionario" && cineJoy.usuario?.papel === "Funcionario") {
       return <TelaFuncionario
-        filmes={cineJoy.filmes} ingressos={cineJoy.ingressos} logs={cineJoy.logs}
+        filmes={cineJoy.filmes} ingressos={cineJoy.ingressos}
         produtos={cineJoy.produtos} salas={cineJoy.salas} unidades={cineJoy.unidades}
         usuario={cineJoy.usuario} sair={cineJoy.sair} atualizarDados={cineJoy.carregarDados}
         gravarFilme={cineJoy.gravarFilme} removerFilme={cineJoy.removerFilme}

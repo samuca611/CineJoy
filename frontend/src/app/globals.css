@@ -1,4 +1,4 @@
-@import "../main/js/com/example/cinejoy/ui/styles.css";
+@import "../main/js/com/example/cinejoy/ui/estilos.css";
 @import "../main/js/com/example/cinejoy/ui/components/Cabecalho/cabecalho.css";
 @import "../main/js/com/example/cinejoy/ui/estrutura.css";
 @import "../main/js/com/example/cinejoy/ui/screens/PaginaInicial/inicio.css";
@@ -13,4 +13,3 @@
 @import "../main/js/com/example/cinejoy/ui/screens/TelaFuncionario/funcionario.css";
 @import "../main/js/com/example/cinejoy/ui/responsivo.css";
 @import "../main/js/com/example/cinejoy/ui/screens/TelaMinhaConta/conta.css";
-@import "../main/js/com/example/cinejoy/ui/screens/TelaLogs/logs.css";

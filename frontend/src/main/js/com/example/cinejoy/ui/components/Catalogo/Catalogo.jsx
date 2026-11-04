@@ -36,11 +36,11 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
   }
 
   return (
-    <section className="orange-band" id="catalogo">
-      <div className="content-wrap">
-        <div className="section-heading">
+    <section className="faixa-catalogo" id="catalogo">
+      <div className="conteudo-central">
+        <div className="titulo-secao">
           <p>Confira | Pré-venda</p>
-          <div className="arrow-group">
+          <div className="setas-catalogo">
             <button type="button" aria-label="Anterior" onClick={voltarPosters}>
               <ChevronLeft size={19} />
             </button>
@@ -50,13 +50,13 @@ export default function Catalogo({ filmes, selecionarFilme, textoBusca }) {
           </div>
         </div>
 
-        <div className="catalog-row">
+        <div className="lista-cartazes">
           {filmesVisiveis.length === 0 ? (
-            <p className="empty-message">
+            <p className="mensagem-vazia">
               {textoBusca ? "Nenhum filme encontrado." : "Nenhum filme cadastrado. Entre como funcionário para adicionar filmes."}
             </p>
           ) : filmesVisiveis.map((filme) => (
-            <article className="catalog-card" key={filme.id}>
+            <article className="cartao-filme" key={filme.id}>
               <strong>{filme.titulo}</strong>
               <button type="button" onClick={() => selecionarFilme(filme)}>
                 <img

@@ -1,5 +1,5 @@
-import AppNavigation from "./ui/navigation/AppNavigation.jsx";
+import Navegacao from "./ui/navigation/Navegacao.jsx";
 
 export default function App() {
-  return <AppNavigation />;
+  return <Navegacao />;
 }

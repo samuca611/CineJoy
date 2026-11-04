@@ -105,10 +105,10 @@ export default function TelaAlimentacao({
         usuarioLogado={usuarioLogado}
       />
 
-      <main className="food-page">
-        <section className="food-banner"></section>
+      <main className="pagina-alimentos">
+        <section className="poster-alimentos" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
 
-        <section className="food-toolbar">
+        <section className="topo-alimentos">
           <button type="button" onClick={voltarInicio}>
             Voltar para início
           </button>
@@ -118,16 +118,16 @@ export default function TelaAlimentacao({
           </div>
         </section>
 
-        <section className="food-layout">
+        <section className="area-alimentos">
           {/* lista de produtos disponiveis para compra */}
-          <div className="food-products">
+          <div className="lista-alimentos">
             {produtos.length === 0 ? (
-              <p className="empty-message">
+              <p className="mensagem-vazia">
                 Nenhum alimento cadastrado. Entre como funcionário para adicionar produtos.
               </p>
               // mapeia e exibe cada produto cadastrado em formato de cartão
             ) : produtos.map((produto) => (
-              <article className="food-card" key={produto.id}>
+              <article className="item-alimento" key={produto.id}>
                 <img src={produto.imagem || "/assets/pipoca.jpg"} alt={produto.nome} />
                 <div>
                   <h2>{produto.nome}</h2>
@@ -142,18 +142,18 @@ export default function TelaAlimentacao({
             ))}
           </div>
 
-          <aside className="cart-panel">
+          <aside className="carrinho">
             <h2>
               <ShoppingCart size={22} />
               Carrinho
             </h2>
 
             {carrinho.length === 0 ? (
-              <p className="empty-cart">Nenhum alimento selecionado.</p>
+              <p className="carrinho-vazio">Nenhum alimento selecionado.</p>
             ) : (
-              <div className="cart-list">
+              <div className="lista-carrinho">
                 {carrinho.map((item) => (
-                  <article className="cart-item" key={item.id}>
+                  <article className="item-carrinho" key={item.id}>
                     <span>{item.nome}</span>
                     <div>
                       <button type="button" onClick={() => removerProduto(item)}>
@@ -169,12 +169,12 @@ export default function TelaAlimentacao({
               </div>
             )}
 
-            <div className="cart-total">
+            <div className="total-carrinho">
               <span>Total</span>
               <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
             </div>
 
-            <button className="finish-order" type="button" disabled={!carrinho.length} onClick={() => setPagamentoAberto(true)}>
+            <button className="finalizar-pedido" type="button" disabled={!carrinho.length} onClick={() => setPagamentoAberto(true)}>
               Finalizar pedido
             </button>
           </aside>

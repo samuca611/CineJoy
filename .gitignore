@@ -12,3 +12,4 @@ obj/
 *.zip
 .env
 .env.local
+Back-end/Api/appsettings.Local.json

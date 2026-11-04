@@ -75,10 +75,10 @@ export default function TelaPagamento({
         usuarioLogado={usuarioLogado}
       />
 
-      <main className="payment-page">
-        <section className="payment-banner"></section>
+      <main className="pagina-pagamento">
+        <section className="poster-pagamento" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
 
-        <section className="payment-toolbar">
+        <section className="topo-pagamento">
           <button type="button" onClick={voltar}>
             Voltar para assentos
           </button>
@@ -88,12 +88,12 @@ export default function TelaPagamento({
           </div>
         </section>
 
-        <section className="payment-layout">
-          <div className="payment-methods">
+        <section className="area-pagamento">
+          <div className="formas-pagamento">
             <h2>Forma de pagamento</h2>
 
             <button
-              className={formaPagamento === "Pix" ? "active" : ""}
+              className={formaPagamento === "Pix" ? "ativo" : ""}
               type="button"
               onClick={() => setFormaPagamento("Pix")}
             >
@@ -101,7 +101,7 @@ export default function TelaPagamento({
               Pix
             </button>
             <button
-              className={formaPagamento === "Cartao" ? "active" : ""}
+              className={formaPagamento === "Cartao" ? "ativo" : ""}
               type="button"
               onClick={() => setFormaPagamento("Cartao")}
             >
@@ -109,7 +109,7 @@ export default function TelaPagamento({
               Cartão
             </button>
             <button
-              className={formaPagamento === "Boleto" ? "active" : ""}
+              className={formaPagamento === "Boleto" ? "ativo" : ""}
               type="button"
               onClick={() => setFormaPagamento("Boleto")}
             >
@@ -118,28 +118,28 @@ export default function TelaPagamento({
             </button>
 
             {formaPagamento === "Cartao" && (
-              <div className="pix-box">
+              <div className="quadro-pagamento">
                 <CreditCard size={84} />
                 <p>Simulação com cartão. Nenhum valor será cobrado.</p>
               </div>
             )}
 
             {formaPagamento === "Pix" && (
-              <div className="pix-box">
+              <div className="quadro-pagamento">
                 <QrCode size={94} />
                 <p>Simulação Pix. Nenhum código de cobrança será gerado.</p>
               </div>
             )}
 
             {formaPagamento === "Boleto" && (
-              <div className="pix-box">
+              <div className="quadro-pagamento">
                 <Banknote size={84} />
                 <p>Simulação de boleto. Nenhum boleto será emitido.</p>
               </div>
             )}
           </div>
 
-          <aside className="payment-summary">
+          <aside className="resumo-pagamento">
             {filme && <img src={filme.imagem} alt={filme.titulo} />}
             <h2>Resumo da compra</h2>
             {filme && <p><strong>Filme:</strong> {filme.titulo}</p>}
@@ -148,7 +148,7 @@ export default function TelaPagamento({
             <p><strong>Assentos:</strong> {assentos.join(", ")}</p>
             <p><strong>Ingressos:</strong> R$ {totalIngressos.toFixed(2).replace(".", ",")}</p>
 
-            <div className="payment-foods">
+            <div className="alimentos-pagamento">
               <strong>Alimentos</strong>
               {alimentos.length === 0 ? (
                 <span>Nenhum alimento selecionado.</span>
@@ -159,24 +159,24 @@ export default function TelaPagamento({
               )}
             </div>
 
-            <div className="payment-total">
+            <div className="total-pagamento">
               <span>Total</span>
               <strong>R$ {Number(pedido?.total ?? total).toFixed(2).replace(".", ",")}</strong>
             </div>
 
             {compraFinalizada ? (
-              <div className="payment-success">
+              <div className="pagamento-concluido">
                 <CheckCircle2 size={28} />
                 Pedido #{pedido?.id} salvo. Pagamento simulado.
               </div>
             ) : (
-              <button className="finish-order" type="button" disabled={enviando} onClick={confirmarPagamento}>
+              <button className="finalizar-pedido" type="button" disabled={enviando} onClick={confirmarPagamento}>
                 {enviando ? "Salvando..." : "Confirmar simulação"}
               </button>
             )}
 
             {erro && <p role="alert">{erro}</p>}
-            <button className="secondary-action" type="button" onClick={voltarInicio}>
+            <button className="acao-secundaria" type="button" onClick={voltarInicio}>
               Voltar para início
             </button>
           </aside>

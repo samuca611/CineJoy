@@ -1,9 +1,9 @@
-.func-header {
+.func-cabecalho {
   min-height: 255px;
   background: var(--vermelho-escuro);
 }
 
-.func-strip {
+.func-faixa {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -13,7 +13,7 @@
   background: var(--vermelho);
 }
 
-.func-strip button {
+.func-faixa button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
   line-height: 1.3;
 }
 
-.func-strip svg {
+.func-faixa svg {
   flex-shrink: 0;
 }
 
@@ -40,7 +40,7 @@
   max-width: 80%;
 }
 
-.func-nav {
+.func-menu {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   align-items: center;
@@ -51,9 +51,9 @@
   padding: 0 56px;
 }
 
-.func-nav button,
-.func-nav a,
-.func-nav label {
+.func-menu button,
+.func-menu a,
+.func-menu label {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,17 +64,17 @@
   font-size: 20px;
 }
 
-.func-nav button.active {
+.func-menu button.ativo {
   color: var(--laranja-claro);
 }
 
-.func-nav label {
+.func-menu label {
   border-radius: 24px;
   padding: 0 18px;
   background: var(--vermelho);
 }
 
-.func-nav input {
+.func-menu input {
   width: 100%;
   border: 0;
   outline: 0;
@@ -82,7 +82,7 @@
   color: white;
 }
 
-.func-main {
+.func-conteudo {
   display: grid;
   grid-template-columns: 394px 1fr;
   gap: 52px;
@@ -91,26 +91,26 @@
   background: var(--laranja-claro);
 }
 
-.func-main.single {
+.func-conteudo.coluna-unica {
   grid-template-columns: 1fr;
   min-height: 0;
 }
 
-.func-side {
+.func-lateral {
   display: grid;
   align-content: start;
   gap: 24px;
 }
 
-.func-side h2,
-.func-side label,
-.func-poster-card {
+.func-lateral h2,
+.func-lateral label,
+.func-imagem {
   border-radius: 20px;
   background: #741d00;
   color: white;
 }
 
-.func-side h2 {
+.func-lateral h2 {
   margin: 0;
   padding: 24px 18px;
   font-size: 23px;
@@ -118,17 +118,17 @@
   text-align: center;
 }
 
-.func-side label {
+.func-lateral label {
   display: grid;
   gap: 8px;
   padding: 22px;
   font-size: 20px;
 }
 
-.func-side input,
-.func-form input,
-.func-form select,
-.func-select select {
+.func-lateral input,
+.func-formulario input,
+.func-formulario select,
+.func-selecao select {
   min-height: 53px;
   border: 0;
   border-radius: 29px;
@@ -137,14 +137,14 @@
   color: black;
 }
 
-.func-poster-card {
+.func-imagem {
   display: grid;
   gap: 14px;
   padding: 18px 22px 26px;
   text-align: center;
 }
 
-.func-poster-card img {
+.func-imagem img {
   width: 100%;
   height: 360px;
   border-radius: 16px;
@@ -152,7 +152,7 @@
   background: var(--cinza);
 }
 
-.func-panel {
+.func-painel {
   display: grid;
   align-content: start;
   gap: 24px;
@@ -163,21 +163,21 @@
   background: #d49337;
 }
 
-.func-panel h1 {
+.func-painel h1 {
   margin: 0;
   font-size: 26px;
   text-align: center;
 }
 
-.func-actions {
+.func-acoes {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
-.func-actions button,
-.func-form button,
-.delete-box button {
+.func-acoes button,
+.func-formulario button,
+.quadro-exclusao button {
   min-height: 70px;
   border: 0;
   border-radius: 29px;
@@ -188,12 +188,12 @@
   font-weight: 700;
 }
 
-.func-actions button.active {
+.func-acoes button.ativo {
   background: var(--vermelho);
   color: white;
 }
 
-.func-actions button {
+.func-acoes button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,15 +202,15 @@
   line-height: 1.3;
 }
 
-.func-select,
-.func-form label {
+.func-selecao,
+.func-formulario label {
   display: grid;
   gap: 8px;
   font-size: 18px;
   font-weight: 600;
 }
 
-.func-form {
+.func-formulario {
   display: grid;
   align-content: start;
   align-items: start;
@@ -218,26 +218,26 @@
   gap: 18px;
 }
 
-.func-form label,
-.func-form input,
-.func-form select {
+.func-formulario label,
+.func-formulario input,
+.func-formulario select {
   min-width: 0;
   width: 100%;
 }
 
-.func-form .wide,
-.func-form button {
+.func-formulario .linha-inteira,
+.func-formulario button {
   grid-column: 1 / 3;
 }
 
-.func-info-grid,
-.payment-box {
+.func-informacoes,
+.situacao-pagamento {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px;
 }
 
-.func-info-grid span {
+.func-informacoes span {
   display: grid;
   gap: 7px;
   min-height: 75px;
@@ -246,7 +246,7 @@
   background: var(--vermelho);
 }
 
-.payment-box {
+.situacao-pagamento {
   grid-template-columns: repeat(2, minmax(220px, 290px));
   justify-content: center;
   border-radius: 20px;
@@ -255,15 +255,15 @@
   text-align: center;
 }
 
-.payment-box p,
-.payment-box strong {
+.situacao-pagamento p,
+.situacao-pagamento strong {
   grid-column: 1 / -1;
   margin: 0;
   font-size: 22px;
 }
 
-.payment-box button,
-.home-buttons button {
+.situacao-pagamento button,
+.botoes-inicio button {
   min-height: 70px;
   border: 0;
   border-radius: 20px;
@@ -274,24 +274,24 @@
   font-weight: 700;
 }
 
-.home-panel {
+.painel-inicio {
   justify-items: center;
   gap: 32px;
 }
 
-.home-panel > img {
+.painel-inicio > img {
   width: 380px;
   max-width: 100%;
 }
 
-.home-buttons {
+.botoes-inicio {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 18px;
   width: 100%;
 }
 
-.home-buttons button {
+.botoes-inicio button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -305,12 +305,12 @@
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
-  .home-buttons {
+  .botoes-inicio {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.delete-box {
+.quadro-exclusao {
   display: grid;
   justify-items: center;
   gap: 24px;
@@ -319,7 +319,7 @@
   background: var(--vermelho);
 }
 
-.delete-box p {
+.quadro-exclusao p {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
@@ -331,26 +331,26 @@
   margin: 0 auto;
 }
 
-.func-form-acoes {
+.func-formulario-acoes {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   grid-column: 1 / -1;
 }
 
-.func-form-acoes button {
+.func-formulario-acoes button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   flex: 1 1 210px;
   min-height: 54px;
-  border-radius: 8px;
+  border-radius: 29px;
   padding: 12px 18px;
   font-size: 18px;
 }
 
-.func-form-acoes .func-secundario {
+.func-formulario-acoes .func-secundario {
   background: var(--vermelho);
   color: white;
 }
@@ -401,7 +401,42 @@
   width: 44px;
   height: 44px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 29px;
+  background: var(--vermelho);
+  color: white;
+}
+
+.func-registro-acoes .func-sessoes {
+  gap: 8px;
+  width: auto;
+  padding: 0 12px;
+}
+
+.func-sala-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.func-sala-topo h1 {
+  text-align: left;
+}
+
+.func-sala-topo p {
+  margin: 8px 0 0;
+}
+
+.func-voltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 29px;
+  padding: 10px 16px;
   background: var(--vermelho);
   color: white;
 }
@@ -421,7 +456,7 @@
 .func-confirmacao button {
   min-height: 44px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 29px;
   padding: 10px 16px;
   background: var(--vermelho);
   color: white;

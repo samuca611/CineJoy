@@ -6,7 +6,7 @@ export default function AreaUsuario({ cabecalho, aba, abrirConta, abrirPedidos, 
   return <>
     <Cabecalho {...cabecalho} />
     <main className="area-usuario">
-      <section className="food-banner" aria-label="Espaço para pôster"></section>
+      <section className="poster-alimentos" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
       <section className="conta-conteudo">
         <div className="conta-titulo">
           <button type="button" className="conta-voltar" onClick={voltarInicio} title="Voltar para início" aria-label="Voltar para início">

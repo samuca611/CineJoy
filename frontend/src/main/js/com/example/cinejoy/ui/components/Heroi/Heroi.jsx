@@ -1,7 +1,5 @@
 export default function Heroi() {
   return (
-    <section className="hero" id="top">
-      <div className="poster-placeholder"></div>
-    </section>
+    <section className="poster-principal" id="top" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
   );
 }

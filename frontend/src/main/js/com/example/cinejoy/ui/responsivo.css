@@ -1,159 +1,145 @@
 @media (max-width: 760px) {
-  .account-strip,
-  .func-strip {
+  .faixa-conta,
+  .func-faixa {
     padding-right: 16px;
   }
 
-  .nav-shell {
+  .menu-principal {
     grid-template-columns: 1fr 1fr;
     min-height: auto;
     padding: 140px 16px 18px;
   }
 
-  .brand-mark,
-  .search-pill {
+  .marca-cinema,
+  .campo-busca {
     grid-column: 1 / 3;
   }
 
-  .brand-mark img {
+  .marca-cinema img {
     width: 116px;
     height: 116px;
     bottom: 39px;
   }
 
-  .nav-shell a,
-  .nav-shell button,
-  .search-pill {
+  .menu-principal a,
+  .menu-principal button,
+  .campo-busca {
     font-size: 16px;
   }
 
-  .hero,
-  .poster-placeholder {
-    min-height: 300px;
-  }
-
-  .catalog-row {
+  .lista-cartazes {
     display: flex;
     gap: 18px;
     overflow-x: auto;
   }
 
-  .catalog-card {
+  .cartao-filme {
     min-width: 230px;
     min-height: 380px;
   }
 
-  .catalog-card img {
+  .cartao-filme img {
     height: 285px;
   }
 
-  .section-heading,
-  .cadastro-toolbar,
-  .food-toolbar,
-  .ticket-toolbar,
-  .payment-toolbar {
+  .titulo-secao,
+  .topo-cadastro,
+  .topo-alimentos,
+  .topo-ingresso,
+  .topo-pagamento {
     align-items: flex-start;
     flex-direction: column;
   }
 
-  .cadastro-toolbar h1,
-  .food-toolbar h1,
-  .ticket-toolbar h1,
-  .payment-toolbar h1 {
+  .topo-cadastro h1,
+  .topo-alimentos h1,
+  .topo-ingresso h1,
+  .topo-pagamento h1 {
     font-size: 36px;
     text-align: left;
   }
 
-  .cadastro-toolbar p,
-  .food-toolbar p,
-  .ticket-toolbar p,
-  .payment-toolbar p {
+  .topo-cadastro p,
+  .topo-alimentos p,
+  .topo-ingresso p,
+  .topo-pagamento p {
     text-align: left;
   }
 
-  .movie-item {
+  .item-filme {
     grid-template-columns: 96px 1fr;
     gap: 12px;
     padding: 28px 0;
   }
 
-  .movie-item > img {
+  .item-filme > img {
     width: 96px;
     height: 135px;
   }
 
-  .movie-copy h3 {
+  .dados-filme h3 {
     font-size: 22px;
   }
 
-  .movie-copy p {
+  .dados-filme p {
     font-size: 13px;
   }
 
-  .cadastro-area,
-  .cadastro-form,
-  .food-layout,
-  .ticket-layout,
-  .payment-layout,
-  .food-products,
-  .func-main,
-  .func-nav,
-  .func-actions,
-  .func-form,
-  .func-info-grid,
-  .payment-box,
-  .logs-row,
-  .home-buttons,
-  .payment-methods,
-  .card-form {
+  .area-cadastro,
+  .formulario-cadastro,
+  .area-alimentos,
+  .area-ingresso,
+  .area-pagamento,
+  .lista-alimentos,
+  .func-conteudo,
+  .func-menu,
+  .func-acoes,
+  .func-formulario,
+  .func-informacoes,
+  .situacao-pagamento,
+  .linha-logs,
+  .botoes-inicio,
+  .formas-pagamento,
+  .formulario-cartao {
     grid-template-columns: 1fr;
   }
 
-  .food-card {
+  .item-alimento {
     grid-template-columns: 120px 1fr;
   }
 
-  .food-card img {
+  .item-alimento img {
     width: 120px;
     height: 150px;
   }
 
-  .cadastro-form button,
-  .cadastro-form p,
-  .food-card button,
-  .func-form .wide,
-  .func-form button,
-  .payment-methods h2,
-  .card-form,
-  .pix-box,
-  .payment-box p,
-  .payment-box strong {
+  .formulario-cadastro button,
+  .formulario-cadastro p,
+  .item-alimento button,
+  .func-formulario .linha-inteira,
+  .func-formulario button,
+  .formas-pagamento h2,
+  .formulario-cartao,
+  .quadro-pagamento,
+  .situacao-pagamento p,
+  .situacao-pagamento strong {
     grid-column: 1;
   }
 
-  .func-main {
+  .func-conteudo {
     padding: 24px 16px;
   }
 
-  .func-panel {
+  .func-painel {
     padding: 28px 18px;
   }
 
-  .seat-line > div {
-    gap: 4px;
-  }
-
-  .seat-button {
-    height: 20px;
-    font-size: 8px;
-  }
-
-  .site-footer {
+  .rodape-site {
     min-height: 430px;
     padding: 58px 18px 78px;
   }
 
-  .site-footer p {
+  .rodape-site p {
     padding-left: 0;
   }
 

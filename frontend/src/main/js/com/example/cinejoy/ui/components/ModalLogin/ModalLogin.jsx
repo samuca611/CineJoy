@@ -27,11 +27,11 @@ export default function ModalLogin({ abrirCadastro, fecharLogin, entrar }) {
   }
 
   return (
-    <div className="login-overlay" onClick={fecharLogin}>
+    <div className="login-fundo" onClick={fecharLogin}>
       <section className="login-modal" onClick={(evento) => evento.stopPropagation()}>
         <img src="/assets/logo-cinejoy-footer.png" alt="CineJoy" />
 
-        <form className="login-form" onSubmit={enviarLogin}>
+        <form className="login-formulario" onSubmit={enviarLogin}>
           <h2>Acesso por Email</h2>
 
           <label>
@@ -54,9 +54,9 @@ export default function ModalLogin({ abrirCadastro, fecharLogin, entrar }) {
 
           <a href="#recuperar-senha">esqueci a senha</a>
 
-          {erro !== "" && <span className="login-error">{erro}</span>}
+          {erro !== "" && <span className="login-erro">{erro}</span>}
 
-          <button className="login-button" type="submit">
+          <button className="login-botao" type="submit">
             Entrar
           </button>
         </form>

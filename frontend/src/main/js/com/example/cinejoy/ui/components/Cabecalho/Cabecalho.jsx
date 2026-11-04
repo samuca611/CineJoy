@@ -27,15 +27,15 @@ export default function Cabecalho({
   const valorUnidade = unidadeEscolhidaId || (unidades[0] ? String(unidades[0].id) : "");
 
   return (
-    <header className="site-header">
-      <div className="account-strip">
+    <header className="cabecalho-site">
+      <div className="faixa-conta">
         <button type="button" onClick={clicarConta}>
           <UserCircle size={17} />
           {usuarioLogado || "Entre/Cadastre-se"}
         </button>
       </div>
 
-      <nav className="nav-shell" aria-label="Navegação principal">
+      <nav className="menu-principal" aria-label="Navegação principal">
         <button type="button" onClick={abrirAlimentacao}>
           <Utensils size={16} />
           Alimentação
@@ -44,12 +44,12 @@ export default function Cabecalho({
           <Ticket size={16} />
           Ingresso
         </button>
-        <div className="brand-mark">
-          <button className="brand-logo-button" type="button" onClick={abrirInicio} aria-label="Inicio CineJoy">
+        <div className="marca-cinema">
+          <button className="botao-logo" type="button" onClick={abrirInicio} aria-label="Inicio CineJoy">
             <img src="/assets/logo-cinejoy-header.png" alt="" />
           </button>
 
-          <label className="cinema-field">
+          <label className="campo-unidade">
             <MapPin size={20} />
             <select value={valorUnidade} onChange={(evento) => trocarUnidade(evento.target.value)}>
               {unidades.length === 0 ? (
@@ -62,7 +62,7 @@ export default function Cabecalho({
             </select>
           </label>
         </div>
-        <form className="search-pill" onSubmit={enviarBusca}>
+        <form className="campo-busca" onSubmit={enviarBusca}>
           <button type="submit" aria-label="Buscar filmes">
             <Search size={15} />
           </button>

@@ -178,10 +178,10 @@ export default function TelaCompraIngresso({
         usuarioLogado={usuarioLogado}
       />
 
-      <main className="ticket-page">
-        <section className="ticket-banner"></section>
+      <main className="pagina-ingresso">
+        <section className="poster-ingresso" role="img" aria-label="CineJoy: filmes, pipoca e algodão-doce"></section>
 
-        <section className="ticket-toolbar">
+        <section className="topo-ingresso">
           <button type="button" onClick={voltarInicio}>
             Voltar para início
           </button>
@@ -191,12 +191,12 @@ export default function TelaCompraIngresso({
           </div>
         </section>
 
-        <section className="ticket-layout">
-          <div className="seat-panel">
-            <div className="session-row">
+        <section className="area-ingresso">
+          <div className="painel-assentos">
+            <div className="horarios-sessao">
               {sessoes.map((sessao) => (
                 <button
-                  className={sessaoEscolhida === sessao.id ? "active" : ""}
+                  className={sessaoEscolhida === sessao.id ? "ativo" : ""}
                   key={sessao.id}
                   type="button"
                   onClick={() => setSessaoEscolhida(sessao.id)}
@@ -206,39 +206,43 @@ export default function TelaCompraIngresso({
               ))}
             </div>
 
-            <div className="seat-map">
-              {fileiras.map((fileira) => (
-                <div className="seat-line" key={fileira}>
-                  <strong>{fileira}</strong>
-                  <div>
-                    {criarAssentos()
-                      .filter((assento) => assento.startsWith(fileira))
-                      .map((assento) => (
-                        <button
-                          className={[
-                            "seat-button",
-                            assentosSelecionados.includes(assento) ? "selected" : "",
-                            assentosBloqueados.includes(assento) ? "blocked" : "",
-                            assentosAcessiveis.includes(assento) ? "accessible" : ""
-                          ].join(" ")}
-                          key={assento}
-                          type="button"
-                          disabled={!sessao || assentosBloqueados.includes(assento)}
-                          onClick={() => alternarAssento(assento)}
-                          aria-label={`Assento ${assento}`}
-                        >
-                          {assentosAcessiveis.includes(assento) ? "AC" : ""}
-                        </button>
-                      ))}
+            <div className="rolagem-assentos" role="region" aria-label="Mapa de assentos" tabIndex={0}>
+              <div className="mapa-assentos">
+                {fileiras.map((fileira) => (
+                  <div className="fileira-assentos" key={fileira}>
+                    <strong>{fileira}</strong>
+                    <div>
+                      {criarAssentos()
+                        .filter((assento) => assento.startsWith(fileira))
+                        .map((assento) => (
+                          <button
+                            className={[
+                              "botao-assento",
+                              assentosSelecionados.includes(assento) ? "selecionado" : "",
+                              assentosBloqueados.includes(assento) ? "ocupado" : "",
+                              assentosAcessiveis.includes(assento) ? "acessivel" : ""
+                            ].join(" ")}
+                            key={assento}
+                            type="button"
+                            disabled={!sessao || assentosBloqueados.includes(assento)}
+                            onClick={() => alternarAssento(assento)}
+                            aria-label={`Assento ${assento}`}
+                            aria-pressed={assentosSelecionados.includes(assento)}
+                            title={`Assento ${assento}${assentosAcessiveis.includes(assento) ? " - acessível" : ""}${assentosBloqueados.includes(assento) ? " - ocupado" : ""}`}
+                          >
+                            {assento}
+                          </button>
+                        ))}
+                    </div>
+                    <strong>{fileira}</strong>
                   </div>
-                  <strong>{fileira}</strong>
-                </div>
-              ))}
-              <div className="screen-label">TELA</div>
+                ))}
+                <div className="tela-cinema">TELA</div>
+              </div>
             </div>
           </div>
 
-          <aside className="ticket-summary">
+          <aside className="resumo-ingresso">
             <img src={filme.imagem} alt={filme.titulo} />
             <h2>
               <Ticket size={22} />
@@ -251,9 +255,9 @@ export default function TelaCompraIngresso({
               <ShoppingCart size={18} />
               Alimentos
             </h3>
-            <div className="ticket-food-list">
+            <div className="alimentos-ingresso">
               {produtos.length === 0 ? (
-                <p className="empty-cart">Nenhum alimento cadastrado.</p>
+                <p className="carrinho-vazio">Nenhum alimento cadastrado.</p>
               ) : produtos.map((produto) => (
                 <article key={produto.id}>
                   <span>{produto.nome}</span>
@@ -270,12 +274,12 @@ export default function TelaCompraIngresso({
               ))}
             </div>
 
-            <div className="ticket-total">
+            <div className="total-ingresso">
               <span>Total</span>
               <strong>R$ {total.toFixed(2).replace(".", ",")}</strong>
             </div>
-            {erro !== "" && <p className="ticket-error">{erro}</p>}
-            <button className="finish-order" type="button" onClick={finalizarCompra}>
+            {erro !== "" && <p className="erro-ingresso">{erro}</p>}
+            <button className="finalizar-pedido" type="button" onClick={finalizarCompra}>
               Finalizar compra
             </button>
           </aside>

@@ -5,7 +5,7 @@ export const metadata = {
   description: "Site do cinema CineJoy"
 };
 
-export default function RootLayout({ children }) {
+export default function LayoutPrincipal({ children }) {
   return (
     <html lang="pt-BR">
       <body>{children}</body>
