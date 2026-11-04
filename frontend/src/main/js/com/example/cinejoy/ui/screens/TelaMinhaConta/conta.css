@@ -39,7 +39,7 @@
   gap: 8px;
   min-height: 44px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 29px;
   padding: 10px 16px;
   background: var(--vermelho-escuro);
   color: var(--branco);
@@ -85,7 +85,7 @@
 .conta-formulario {
   padding: 28px;
   background: var(--vermelho);
-  border-radius: 8px;
+  border-radius: 24px;
 }
 
 .conta-formulario fieldset {
@@ -111,7 +111,7 @@
   min-width: 0;
   height: 48px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 29px;
   background: var(--branco);
   color: var(--preto);
   padding: 10px 12px;
